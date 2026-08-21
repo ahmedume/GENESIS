@@ -1,0 +1,42 @@
+@import "tailwindcss";
+
+/* ===== DESIGN-SYSTEM.md tokens ===== */
+:root {
+  --void: #05010f;
+  --deep: #0b0221;
+  --white-hot: #fff7e6;
+  --magenta: #ff2e88;
+  --hot-orange: #ff6b1a;
+  --amber: #ffb347;
+  --crimson: #c2185b;
+  --cyan: #00f0ff;
+  --teal: #01cdcd;
+  --violet: #7b2fbe;
+  --purple: #b967ff;
+  --blue: #2e5bff;
+  --gold: #ffd75e;
+  --sun: #fff152;
+  --earth-blue: #38bdf8;
+  --text-primary: #f4eeff;
+  --text-secondary: rgb(244 238 255 / 64%);
+  --font-display: "Audiowide", "Space Grotesk", system-ui, sans-serif;
+  --font-body: "Space Grotesk", system-ui, sans-serif;
+  --font-terminal: "VT323", ui-monospace, monospace;
+}
+
+html {
+  background: var(--void);
+  overscroll-behavior: none;
+}
+
+body {
+  margin: 0;
+  background: var(--void);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  scrollbar-width: none; /* Cosmic Clock replaces the scrollbar (INTERACTIONS I-02) */
+}
+
+body::-webkit-scrollbar {
+  display: none;
+}

@@ -37,7 +37,7 @@ Repo root holds infra only (Dockerfile, specs).
 
 ```
 repo-root/
-├── frontend/                      # THE app (Vite root)
+├── frontend/                      # THE app (Vite root) — ALL app code lives here (R1)
 │   ├── index.html                 # meta/OG tags, font preloads, #root
 │   ├── vite.config.ts             # react plugin; manualChunks for three/postprocessing
 │   ├── tsconfig.json              # strict true
@@ -81,10 +81,13 @@ repo-root/
 │           ├── timeScale.ts       # logTime(p): p ↔ seconds-since-Big-Bang + formatter
 │           ├── cameraPath.ts      # control points array + curve builder
 │           └── format.ts          # tiny shared formatters
+├── backend/                       # RESERVED — empty until/unless a backend ever exists (R1)
 ├── imgs/                          # screenshots for QA + Devpost submission
-├── Dockerfile                     # multi-stage build → nginx serve (DEPLOYMENT.md §3)
-├── .dockerignore
-├── .env.example                   # EMPTY placeholders only — no secrets ever
+├── dev-frontend.bat               # R2: cd frontend && pnpm install (if needed) && pnpm dev
+├── .gitignore                     # R4: node_modules/, dist/, .env*, logs, OS junk
+├── Dockerfile                     # OPTIONAL — Phase 7 only (R6); multi-stage build → nginx serve
+├── .dockerignore                  # created with Dockerfile in Phase 7
+├── .env.example                   # EMPTY placeholders only — no secrets ever (R3)
 └── README.md                      # run/build/deploy instructions + tech list
 ```
 

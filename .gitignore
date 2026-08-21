@@ -1,0 +1,18 @@
+# deps & builds
+node_modules/
+dist/
+dist-ssr/
+
+# env & secrets — NEVER commit real values
+.env
+.env.*
+!.env.example
+
+# logs & OS junk
+*.log
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# editor
+.idea/

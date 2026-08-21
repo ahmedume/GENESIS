@@ -17,12 +17,13 @@ the user and capture screenshots into `imgs/` per QA-SECURITY.md.
 **Tasks:**
 1. `pnpm create vite frontend --template react-ts`; strict TS; Tailwind v4 entry; tokens CSS from DESIGN-SYSTEM.md.
 2. Install stack per TECH_STACK.md; pin versions; commit lockfile.
-3. Folder skeleton per SDS.md §2 (empty files with header comments).
+3. Folder skeleton per SDS.md §2 (empty files with header comments) + `.gitignore` (R4) + root `dev-frontend.bat` launcher (R2).
 4. Lenis + useScrollProgress + useDampedProgress wired; spacer 1600vh.
 5. Canvas + CameraRig sampling a placeholder straight path; fog VOID color.
-6. `.env.example` (empty placeholders only). *(Dockerfile deferred to Phase 7 by decision — see DEPLOYMENT.md.)*
+6. `.env.example` (empty placeholders only). *(Dockerfile optional, deferred to Phase 7 — R6.)*
 
-**Deliverable:** `pnpm dev` shows smooth damped flythrough on scroll.
+**Deliverable:** double-clicking `dev-frontend.bat` → smooth damped flythrough on scroll at localhost:5173.
+**Bug-check gate (R7):** tsc clean + browser-verified before reporting.
 **Out of scope:** Any epoch content, HUD, postprocessing.
 
 ---

@@ -14,6 +14,22 @@ presenting your recommended option first.
 
 ---
 
+## Standing Rules (owner-mandated)
+
+| # | Rule | Enforced by |
+|---|------|-------------|
+| R1 | Directory hygiene: app code in `frontend/` (backend in `backend/` if ever added) | SDS §2 |
+| R2 | `.bat` launch scripts: root `dev-frontend.bat` (+ `dev-backend.bat` only if a backend ever exists) | SDS §2, BUILD_PLAN P1 |
+| R3 | NEVER hardcode secrets — keys, tokens, emails, anything private | NEVER #1, QA-SECURITY S1–S2 |
+| R4 | `.gitignore` from first commit: `node_modules/`, `dist/`, `.env*`(except example), logs, OS junk | BUILD_PLAN P1 |
+| R5 | Ask-first protocol — request owner advice when confused; recommend an option, don't dump choices | Ask-First Protocol |
+| R6 | Dockerfile OPTIONAL, built last (Phase 7) | ALWAYS #11 |
+| R7 | Bug-check after EVERY snippet/file: typecheck + quick browser/log verification before moving on | Definition of Done |
+| R8 | Functional + security testing per QA-SECURITY.md gates every phase | QA-SECURITY §1–§4 |
+| R9 | Zero spaghetti: clean, compact, industry-grade — Maximum Code Compaction is the lens | THE CRITICAL RULE |
+
+---
+
 ## THE CRITICAL RULE — Maximum Code Compaction
 
 The smallest correct implementation wins. Always.
