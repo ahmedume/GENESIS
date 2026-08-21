@@ -1,10 +1,10 @@
 # Spec Package — GENESIS.EXE (3D Websites Hackathon Entry)
 
 > **Status:** SPECS ONLY — nothing has been built yet.
-> **Concept locked (by user):** Birth of the Universe × **neon synthwave** art direction.
+> **Concept locked (by user):** Birth of the Universe × **cinematic realism** art direction (pivot from synthwave, user decision).
 > **Codename:** GENESIS.EXE — a 13.8-billion-year scroll. Renameable until scaffold day.
 > **Deadline:** Aug 31, 2026 @ 5:00pm CDT. Today: Aug 22, 2026. ~9 days remaining.
-> **Locked decisions:** Concept = Birth of the Universe · Style = Neon synthwave · Package mgr = pnpm · Deploy target = TBD (Vercel recommended default)
+> **Locked decisions:** Concept = Birth of the Universe · Style = Cinematic realism · Assets = hybrid (NASA/SScope textures + Poly Haven HDRI + CC0 models) · Package mgr = pnpm · Deploy target = TBD (Vercel recommended default)
 
 ---
 
@@ -22,9 +22,9 @@ Read in this order. Each doc has a single job:
 | 5 | TECH_STACK.md | Every technology, version, rationale | Draft |
 | 6 | BUILD_PLAN.md | Phase-by-phase build order (7 phases) | Draft |
 | 7 | STORYBOARD.md | Scene-by-scene scroll narrative with final copy | Draft |
-| 8 | DESIGN-SYSTEM.md | Art direction: synthwave palette, type, motion | Draft |
+| 8 | DESIGN-SYSTEM.md | Art direction: cinematic realism grade, type, motion | Draft |
 | 9 | INTERACTIONS.md | Every interaction the user can perform | Draft |
-| 10 | ASSETS.md | Asset sourcing plan + licenses | Draft |
+| 10 | ASSETS.md | Asset sourcing plan + licenses (NASA/SScope/Poly Haven/Sketchfab CC0) | Draft |
 | 11 | PERFORMANCE-BUDGET.md | Hard FPS/load/draw-call budgets | Draft |
 | 12 | ACCESSIBILITY.md | Reduced-motion, mobile, all-audiences compliance | Draft |
 | 13 | DEPLOYMENT.md | Deploy options (pending decision) + Dockerfile spec | Draft |
@@ -46,6 +46,6 @@ Read in this order. Each doc has a single job:
 
 | Judge Criterion | How GENESIS.EXE Wins It |
 |---|---|
-| Visual Design | Neon synthwave identity done properly: bloom-drenched gradients, CRT overlays, chromatic-aberration title, one coherent palette from Big Bang white-hot to deep-space violet |
+| Visual Design | Film-grade cosmic realism: NASA-textured planets, volumetric nebulae, Interstellar-style accretion disk, ACES + anamorphic flares — a sci-fi title sequence, not a webpage |
 | Creativity & Originality | Scroll = flow of time itself. A cosmic clock HUD replaces the scrollbar. The retro grid IS spacetime — it ripples with gravitational waves. Ends by telling the judge they are made of what they just scrolled past |
 | UX & Interactivity | Zero-instruction mechanic (scroll), clickable cosmology fact cards, cursor-reactive particles, epoch jump nav, sound toggle, instant rewind button |

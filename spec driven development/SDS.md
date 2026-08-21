@@ -22,7 +22,7 @@ DOM HUD updates throttled to animation frames.
          CameraRig (damped path)                                     BootScreen (gate)
          EpochDirector (grading blend)                               CosmicClock
            ├─ EpochScene ×9 (mount-on-near / unmount-far)            EpochLabel
-           ├─ SpacetimeGrid (ripple shader)                          FactCard ← facts.ts
+           ├─ Nebulae (fbm-noise volumetric billboards)                FactCard ← facts.ts
            ├─ StarfieldParticles (gravity-well shader)               AudioToggle · RewindBtn
            └─ InteractiveRegistry (raycast)                          JumpNav (reduced-motion)
 [Postprocessing: Bloom → ChromaticAberration → Vignette → Noise]
@@ -42,7 +42,10 @@ repo-root/
 │   ├── vite.config.ts             # react plugin; manualChunks for three/postprocessing
 │   ├── tsconfig.json              # strict true
 │   ├── public/
-│   │   ├── audio/ambient-loop.mp3     # CC0 synthwave pad (~1–2MB, lazy-loaded)
+│   │   ├── audio/ambience-loop.mp3    # CC0 deep-space bed (~1–2MB, lazy-loaded)
+│   │   └── assets/
+│   │       ├── textures/              # NASA / Solar System Scope planet maps (CC-BY/PD, ≤2K)
+│   │       └── models/                # CC0 GLB set pieces only (asteroids etc., Draco)
 │   │   └── favicon.svg
 │   └── src/
 │       ├── main.tsx               # createRoot + <App/>
@@ -58,7 +61,7 @@ repo-root/
 │       │   ├── Scene.tsx          # <Canvas> contents: rig + director + effects (~80 lines)
 │       │   ├── CameraRig.tsx      # Catmull-Rom path sampling by damped progress
 │       │   ├── EpochDirector.tsx  # epoch tables: fog/exposure/bloom blending
-│       │   ├── SpacetimeGrid.tsx  # grid plane + ripple/warp vertex shader
+│       │   ├── SpacetimeWarp.tsx  # inflation streak field + lensing displacement hooks
 │       │   ├── Particles.tsx      # instanced starfield/quark systems + gravity well shader
 │       │   ├── Effects.tsx        # postprocessing stack per quality tier
 │       │   ├── Interactive.tsx    # wrapper: register mesh → hover/click → card store (~60 lines)

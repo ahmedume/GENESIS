@@ -12,12 +12,12 @@ Every way a user can touch the experience. If an interaction isn't listed here, 
 | I-01 | Begin journey | First scroll past p=0.02 | IGNITION sequence (FR-03), camera unlocks | Flash + shockwave + bloom envelope |
 | I-02 | Travel time | Wheel / touch drag / PgDn·PgUp / Space / ArrowKeys | Damped progress → camera along path; reverse supported fully | Continuous world morph; Cosmic Clock live |
 | I-03 | Aim attention | Pointer move | Camera parallax ±2° lerped at 6/s + gravity-well particle attraction within radius | World leans toward cursor subtly |
-| I-04 | Discover object | Hover interactive mesh | Emissive pulse lerp to 1.6× base; cursor ring scales 1→1.5; mini name tag near cursor | Ring border switches MAGENTA→CYAN |
+| I-04 | Discover object | Hover interactive mesh | Emissive pulse lerp to 1.6× base; cursor ring scales 1→1.5; mini name tag near cursor | Ring border brightens SIGNAL-CYAN |
 | I-05 | Open fact card | Click / tap interactive mesh | `activeFactId` set; glass card slides in right | Card entry 300ms ease-cinematic |
 | I-06 | Dismiss card | ESC / X button / click outside / new object click | Previous closes (or swaps) | Exit 300ms; exactly one open max |
 | I-07 | Sound toggle | Click speaker btn / `M` key | WebAudio fade in/out 1s; lowpass cutoff mapped to epoch | Icon swap volume-x ↔ volume-2 |
 | I-08 | Rewind time | `⟲ REWIND TIME` btn at finale | Lenis scrollTo(0) ~8s eased; interruptible by any user scroll | Reverse journey = free content |
-| I-09 | Escape boot stall | ENTER ANYWAY btn (after 8s) / Tab+Enter | Force reveal hero | CRT collapse plays regardless |
+| I-09 | Escape boot stall | ENTER ANYWAY btn (after 8s) / Tab+Enter | Force reveal hero | 400ms fade-through-black plays regardless |
 | I-10 | Epoch jump (reduced-motion only) | Jump nav buttons 1–9 | Instant poster-state swap per epoch | Active button state CYAN border |
 | I-11 | Idle hint | 12s no input while unvisited interactive in view | One gentle emissive pulse on nearest object | Once per epoch per session |
 
@@ -76,7 +76,7 @@ Visibility hidden forces fading-out; return does NOT auto-resume.
 
 ## 4. Micro-interaction Glossary
 
-- Cursor ring: 24px circle, 1px MAGENTA border; expands + recolors over interactives (I-04).
+- Cursor ring: 24px circle, 1px `SIGNAL-CYAN` border; expands + brightens over interactives (I-04).
 - Epoch label change: 90ms opacity flicker before swap (CRT channel-change feel).
 - Buttons: scale(1.03)/border-glow hover; scale(0.97) active press.
 - Sound icon: subtle equalizer bars animation while playing (CSS, 3 bars, VT323-green? no — TEAL `#01CDCD`).

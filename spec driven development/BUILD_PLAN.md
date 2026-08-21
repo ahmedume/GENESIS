@@ -50,7 +50,8 @@ the user and capture screenshots into `imgs/` per QA-SECURITY.md.
 
 **Tasks:**
 1. EpochDirector grading-blend system (fog/bloom tables from epochs.ts).
-2. SpacetimeGrid shader (streak mode for Inflation; warp hooks for later).
+2. SpacetimeWarp shader (GPU streak field for Inflation; lensing displacement hooks for Event Horizon).
+2b. Nebulae volumetric billboards (fbm noise) shared by later epochs.
 3. QuarkSoup instanced particle swarm + collision flashes.
 4. FirstLight CMB shell interior pass-through.
 5. CosmicDawn sequential star ignition beats [SIG].
@@ -66,7 +67,7 @@ the user and capture screenshots into `imgs/` per QA-SECURITY.md.
 **Depends on:** Phase 3.
 
 **Tasks:**
-1. GalaxyEra vinyl-disc spirals (instanced arms + center glow), weave camera.
+1. GalaxyEra realistic spiral galaxies (instanced stars along arms + fbm dust lanes), weave camera.
 2. StellarForge supernova ring through-camera beat [SIG] + gold nebula seeding.
 3. EventHorizon black hole silhouette + grid warp + arc camera.
 4. SolSystem disc collapse → planet snap-in beats → Earth → crane reveal.

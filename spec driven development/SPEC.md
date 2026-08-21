@@ -4,7 +4,7 @@
 ## 1. Overview
 
 - **Project Name:** GENESIS.EXE — 13.8 Billion Years. One Scroll.
-- **One-Line Description:** A neon-synthwave, scroll-driven 3D website where scrolling plays the entire history of the universe — from the Big Bang to "you are here."
+- **One-Line Description:** A cinematic-realism, scroll-driven 3D website where scrolling plays the entire history of the universe — from the Big Bang to "you are here."
 - **Goal:** Win Best Overall at the Devpost 3D Websites Hackathon by maximizing visual impact, originality, and interactivity.
 - **Target Users:** Hackathon judges (high-school students) and general web visitors on desktop and mobile.
 - **Version:** 1.0.0 (MVP = submission version)
@@ -13,7 +13,7 @@
 
 ## 2. Problem Statement
 
-Most hackathon 3D entries are either tech demos (spinning models) or decoration around normal content. GENESIS.EXE reinterprets scrolling as **time itself**: every pixel of scroll advances the cosmic clock across 13.8 billion years, rendered as one continuous cinematic journey. The concept needs zero explanation ("scroll = time"), carries genuine narrative awe grounded in real cosmology, and fuses it with a fully committed synthwave identity that no generic AI-built site will have. The emotional payoff — telling visitors their atoms were forged in the explosions they just scrolled past — is the memorable hook judges quote in deliberations.
+Most hackathon 3D entries are either tech demos (spinning models) or decoration around normal content. GENESIS.EXE reinterprets scrolling as **time itself**: every pixel of scroll advances the cosmic clock across 13.8 billion years, rendered as one continuous cinematic journey. The concept needs zero explanation ("scroll = time"), carries genuine narrative awe grounded in real cosmology, and executes it in a film-grade realistic style built from real space assets that no generic AI-built site will match. The emotional payoff — telling visitors their atoms were forged in the explosions they just scrolled past — is the memorable hook judges quote in deliberations.
 
 ---
 
@@ -30,7 +30,7 @@ Most hackathon 3D entries are either tech demos (spinning models) or decoration 
 - **Description:** Each epoch has its own palette, lighting rig, particle population, and set piece (exact ranges/copy in STORYBOARD.md, palettes in DESIGN-SYSTEM.md).
 - **User Flow:** Crossing epoch boundaries cross-fades background/fog over ~6% of scroll distance; new geometry fades/scales in.
 - **Inputs:** Current scroll progress.
-- **Outputs:** Epoch visuals — singularity point & flash, inflation grid-stretch, quark particle chaos, iridescent CMB field, sequential star ignitions, spinning vinyl-galaxy discs, supernova rings seeding nebulae, black-hole flyby with warped grid, solar-system assembly with Earth finale.
+- **Outputs:** Epoch visuals — singularity point & flash, spacetime warp streaks, ember plasma chaos, iridescent CMB field, sequential star ignitions, realistic spiral galaxies with dust lanes, supernova rings seeding nebulae, black-hole flyby with doppler-shaded accretion disk, solar-system assembly with Earth finale.
 - **Business Rules:** Gradual cross-fades only; each epoch instantly recognizable even when fast-scrolling.
 
 ### Feature 3: Cosmic Clock HUD
@@ -62,7 +62,7 @@ Most hackathon 3D entries are either tech demos (spinning models) or decoration 
 - **Business Rules:** Minimum display 900ms; stall > 8s shows "ENTER ANYWAY"; skip button always reachable by keyboard.
 
 ### Feature 7: Synthwave Ambience (Opt-In)
-- **Description:** One looping CC0 synthwave ambient pad, subtle low-pass filter mapped to epoch (warmer in early hot epochs, darker later). Speaker toggle bottom-right.
+- **Description:** One looping CC0 deep-space ambience bed, subtle low-pass filter mapped to epoch (warmer in early hot epochs, darker later). Speaker toggle bottom-right.
 - **User Flow:** Click toggle → fade-in 1s; click again → fade-out.
 - **Inputs:** Toggle state in zustand store.
 - **Outputs:** WebAudio playback through BiquadFilterNode.
@@ -79,7 +79,7 @@ Most hackathon 3D entries are either tech demos (spinning models) or decoration 
 5. Quark Soup → dense glowing particle swarm sparks collisions around camera.
 6. First Light → iridescent CMB static field envelops camera; "the universe becomes transparent" beat.
 7. Cosmic Dawn → near-black; stars ignite sequentially with laser bursts (signature moment #2).
-8. Galaxy Era → vinyl-record spiral galaxies spin past; weave between them.
+8. Galaxy Era → realistic spiral galaxies rotate past; weave between them.
 9. Stellar Forge → supernova ring expands, gold glitter seeds nebula clouds.
 10. Black Hole Flyby → accretion-ring silhouette; grid warps around it.
 11. Solar System → protoplanetary disc collapses into orbiting planets; Earth glows cyan-blue.

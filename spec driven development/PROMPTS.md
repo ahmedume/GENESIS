@@ -51,7 +51,7 @@ Stop after reporting.
 
 ```
 Execute BUILD_PLAN.md Phase 3 exactly.
-Build EpochDirector grading blend (epochs.ts tables), SpacetimeGrid shader (streak mode; warp hooks),
+Build EpochDirector grading blend (epochs.ts tables), SpacetimeWarp GPU streak shader (Inflation) + lensing hooks,
 QuarkSoup instanced swarm, FirstLight CMB shell pass-through, CosmicDawn sequential star ignitions [SIG].
 Camera control points for these epochs. Every epoch file ≤120 lines composing shared primitives.
 Verify: SRS FR-01/02/04 rows for these ranges + fast-scroll palette rule + perf budgets §3.
@@ -62,7 +62,7 @@ Screenshots → imgs/phases/03/. Stop after reporting.
 
 ```
 Execute BUILD_PLAN.md Phase 4 exactly.
-GalaxyEra vinyl-disc spirals (instanced), StellarForge supernova through-camera beat [SIG] + gold nebula
+GalaxyEra realistic spiral galaxies (instanced arms + fbm dust lanes), StellarForge supernova through-camera beat [SIG] + gold nebula
 seeding, EventHorizon silhouette + grid warp + arc camera, SolSystem disc collapse → planet snap-ins →
 Earth → crane reveal, FinalePlaque DOM overlay with REWIND TIME (FR-11, interruptible).
 Copy from STORYBOARD.md verbatim. Full journey must play 0→100→0 smoothly.

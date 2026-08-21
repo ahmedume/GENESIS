@@ -94,14 +94,14 @@ Never silently choose between materially different directions.
 
 ### Epoch scene pattern (the compaction exemplar)
 ```tsx
-// Purpose: Inflation epoch — grid streaks outward. Exports scene contents only.
-import { SpacetimeGrid } from '../SpacetimeGrid'
+// Purpose: Inflation epoch — spacetime warp streaks. Exports scene contents only.
+import { SpacetimeWarp } from '../SpacetimeWarp'
 
 export function Inflation() {
-  return <SpacetimeGrid mode="streak" hueShift={0.62} />
+  return <SpacetimeWarp intensity={0.62} />
 }
 ```
-Scene files compose shared primitives (`Particles`, `SpacetimeGrid`, `Interactive`) with props —
+Scene files compose shared primitives (`Particles`, `Nebulae`, `Interactive`) with props —
 epoch-specific geometry lives inline ONLY when used once.
 
 ### Interactive object pattern

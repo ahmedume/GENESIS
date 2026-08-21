@@ -4,7 +4,8 @@
 ## Executive Summary
 
 GENESIS.EXE is a single-page, scroll-driven WebGL experience that compresses 13.8 billion years of
-cosmic history into one scroll journey, rendered entirely in a committed neon-synthwave art style.
+cosmic history into one scroll journey, rendered entirely in film-grade **cinematic realism** (real
+NASA/Solar System Scope textures, volumetric light, ACES grading).
 It is built to win the Devpost 3D Websites Hackathon (deadline Aug 31, 2026), where judging weights
 Visual Design, Creativity & Originality, and UX/Interactivity. The audience is high-school judges
 browsing quickly; the product optimizes for an instant "wow," zero-learning-curve interaction
@@ -18,7 +19,7 @@ Judges review dozens of entries in one sitting. Typical submissions are either t
 soul or pretty pages with nothing to do. There is no shortage of spinning cubes — there is a shortage
 of experiences that (a) communicate their mechanic instantly, (b) look like a deliberate authored
 work rather than AI output, and (c) reward interaction at every scroll depth. GENESIS.EXE solves all
-three: the mechanic is scrolling itself, the synthwave identity is executed with system-level
+three: the mechanic is scrolling itself, the cinematic-realism identity is executed with system-level
 consistency (palette, type, CRT motifs), and every epoch contains motion, color shifts, and
 clickable discoveries.
 
@@ -83,7 +84,7 @@ clickable discoveries.
 | FR-05 | ≥ 7 clickable objects with fact cards | Must Have |
 | FR-06 | CRT boot loader gates scene reveal | Must Have |
 | FR-07 | Cursor gravity-well particle attraction | Should Have |
-| FR-08 | Opt-in synthwave ambience with epoch-mapped filter | Should Have |
+| FR-08 | Opt-in deep-space ambience with epoch-mapped filter | Should Have |
 | FR-09 | Reduced-motion static mode with epoch jump nav | Must Have |
 | FR-10 | Auto quality tiers (high/medium/low) | Must Have |
 | FR-11 | Finale plaque + REWIND TIME smooth-scroll | Must Have |

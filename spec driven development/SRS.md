@@ -84,7 +84,7 @@ Non-technical majority; must require zero instructions. Power users may inspect 
 ### FR-06: CRT Boot Loader
 - **Input:** drei useProgress + minimum-timer.
 - **Processing:** Stream fake boot lines on interval while progress < 100; display real %; complete when (progress===100 AND elapsed≥900ms) OR user clicks ENTER ANYWAY (available after stall > 8s).
-- **Output:** Exit animation (CRT collapse 400ms) then `booted=true`, hero reveal.
+- **Output:** Exit animation (fade-through-black 400ms) then `booted=true`, hero reveal.
 - **Validation Rules:** Loader never exceeds 12s total before ENTER ANYWAY appears; keyboard: Tab reaches skip button, Enter activates.
 
 ### FR-07: Cursor Gravity Well

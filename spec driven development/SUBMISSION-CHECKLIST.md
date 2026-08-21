@@ -47,7 +47,7 @@ Capture at 60 FPS, 1080p, calm cursor movement, audio bed optional (site sound o
 ## D. Project Description Outline (fill in Phase 7)
 
 1. Hook line (stardust payoff teaser)
-2. Inspiration: why cosmology + why synthwave (one paragraph, honest)
+2. Inspiration: why cosmology + why cinematic realism (one paragraph, honest)
 3. What it is: scroll=time journey through 9 epochs (list them)
 4. Highlights: IGNITION, cosmic dawn, supernova pass, black-hole warp grid, finale crane reveal
 5. Interaction inventory summary

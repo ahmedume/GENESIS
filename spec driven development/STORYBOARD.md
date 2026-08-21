@@ -1,79 +1,79 @@
 # ===== FILE: STORYBOARD.md =====
 # Scroll Narrative Storyboard: GENESIS.EXE
 
-Total journey height **1600vh**. All percentages below are of total scroll progress.
-Every epoch has: trigger range, honest time label, palette ref, camera move, set piece, and final copy.
-**[SIG]** marks signature moments — these must survive every perf cut.
+> Art direction: **CINEMATIC REALISM** (DESIGN-SYSTEM.md). Copy is final and unchanged by the pivot.
+> Total journey height **1600vh**; percentages are of total scroll progress.
+> **[SIG]** marks signature moments — these must survive every perf cut.
 
 ---
 
-## BOOT — CRT Loader (pre-scroll)
-- **Visuals:** Black CRT screen; `GENESIS.EXE` wordmark (Audiowide, chromatic aberration); streaming terminal lines in VT323: `initializing fundamental forces........ ok`, `seeding quantum fluctuations.... ok`, `calibrating spacetime grid...... ok`, real progress `%`.
-- **Exit:** CRT power-off collapse (vertical squash to line → dot) revealing hero.
+## BOOT — Terminal Loader (pre-scroll)
+- **Visuals:** Pure black; `GENESIS.EXE` wordmark (Audiowide); streaming VT323 lines: `initializing fundamental forces........ ok`, `seeding quantum fluctuations.... ok`, `calibrating spacetime grid...... ok`; real progress % as a thin cyan hairline.
+- **Exit:** 400ms fade through black (CRT collapse removed with synthwave).
 
 ## HERO — The Singularity (0% – 8%) · T = 0
-- **Palette:** VOID `#05010F`, white-hot `#FFF7E6` point.
-- **Set piece:** Single pulsing singularity point center-frame; faint breathing bloom halo; nothing else exists yet.
-- **Camera:** Static, locked. Mouse parallax active (teaches responsiveness safely).
-- **Copy:** Title lockup `GENESIS.EXE`; subtitle `13.8 billion years. One scroll.`; cue bottom-center `▼ SCROLL TO BEGIN TIME` pulsing.
-- **[SIG] IGNITION @ 2%:** First scroll → exposure flash ≤250ms → shockwave ring expands → journey begins.
+- **Grade:** VOID `#000005`, exposure 0.9.
+- **Set piece:** A single white-hot point — physically bright core with restrained bloom halo and one subtle horizontal lens-flare streak. Nothing else exists. Faint breathing pulse.
+- **Camera:** Locked static; handheld micro-drift only. Mouse parallax active.
+- **Copy:** Title lockup `GENESIS.EXE`; subtitle `13.8 billion years. One scroll.`; cue bottom-center `▼ SCROLL TO BEGIN TIME`.
+- **[SIG] IGNITION @ 2%:** First scroll → exposure flash ≤250ms → radially expanding shockwave shell distorts starfield → journey begins.
 
 ## EPOCH 1 — INFLATION (8% – 16%) · T + 10⁻³² s
-- **Palette:** MAGENTA `#FF2E88` → VIOLET `#7B2FBE`.
-- **Set piece:** Neon spacetime grid stretching outward at impossible speed — grid lines streak past like light trails; subtle FOV widening (60°→70°) sells expansion.
-- **Camera:** Dolly forward, accelerating then settling.
-- **Copy (epoch intro, fades after 3s):** `Space itself is stretching — faster than light.`
+- **Grade:** warm violet haze, exposure 1.15.
+- **Set piece:** Spacetime itself streams — GPU particle field stretches into motion-blurred streaks flying past the camera (warp-speed realism, not a wireframe grid); faint background haze scatters light forward.
+- **Camera:** Dolly forward, accelerating then settling; slight FOV widening 60°→68° sells expansion.
+- **Copy (epoch intro):** `Space itself is stretching — faster than light.`
 
 ## EPOCH 2 — THE QUARK SOUP (16% – 26%) · T + 1 μs
-- **Palette:** HOT ORANGE `#FF6B1A`, CYAN `#00F0FF` sparks.
-- **Set piece:** Dense glowing particle swarm (instanced, GPU-animated); random collision flashes; heat-shimmer distortion near particles.
+- **Grade:** ember orange plasma wash, exposure 1.25.
+- **Set piece:** Dense volumetric plasma — instanced glowing particle swarm drifting turbulently, collision flashes sparking; heat-shimmer refraction near dense clumps; deep ember fog.
 - **Camera:** Slow barrel roll while dollying — chaos without nausea.
 - **Copy:** `A trillion degrees. Matter itself hasn't been decided yet.`
 
 ## EPOCH 3 — FIRST LIGHT (26% – 36%) · T + 380,000 yr
-- **Palette:** AMBER `#FFB347` fading to CRIMSON `#C2185B`.
-- **Set piece:** Camera passes inside a vast iridescent static-field shell (the CMB) — faint temperature-noise shimmer across the inner surface; particle density drops sharply, fog clears.
-- **Camera:** Push through shell membrane (scale-crossing beat).
+- **Grade:** amber→crimson cooling, exposure 1.05.
+- **Set piece:** Camera passes inside a vast translucent shell (the CMB) — its inner surface shimmers with fine animated temperature noise like frosted glass lit from everywhere; particle density drops sharply; fog clears as the universe "becomes transparent".
+- **Camera:** Push through the shell membrane (scale-crossing beat).
 - **Copy:** `The fog clears. The oldest light in existence is released — and never stops traveling.`
 - **Interactive:** CMB shell (fact card).
 
 ## EPOCH 4 — COSMIC DAWN (36% – 48%) · T + 200 Myr
-- **Palette:** NEAR-BLACK `#030112`, ELECTRIC CYAN `#00F0FF`, WHITE-BLUE flares.
-- **Set piece [SIG]:** Long darkness… then stars ignite sequentially — laser-bright bursts with lens-flare spikes, each leaving a persistent blue-giant point. Silence of motion makes each pop land.
-- **Camera:** Near-static hold; tiny drift so darkness feels intentional, not broken.
+- **Grade:** near-total darkness, cold bias, bloom 1.6.
+- **Set piece [SIG]:** Long darkness… then blue-giant stars ignite sequentially — each birth: pinpoint flare → anamorphic spike → steady white-blue core that persists. Spaced ≥400ms; the stillness between births is the drama.
+- **Camera:** Near-static hold with tiny drift so darkness feels intentional.
 - **Copy:** `For 100 million years, nothing. Then — light switches on.`
 - **Interactive:** Blue-giant star (fact card).
 
 ## EPOCH 5 — THE GALAXY ERA (48% – 62%) · T + 1–3 Gyr
-- **Palette:** PURPLE `#B967FF`, DEEP BLUE `#2E5BFF`, nebula magenta washes.
-- **Set piece:** Spinning spiral galaxies styled as vinyl records (concentric arm ridges, center label glow); 5–7 instances at varied scales/tilts; camera weaves laterally between them; dust-lane particles stream like highway lights during fly-through.
-- **Camera:** Lateral weave path between disc planes.
+- **Grade:** violet-dust lanes, Milky Way panorama as distant backdrop.
+- **Set piece:** Realistic spiral galaxies — tens of thousands of instanced stars per disc arranged along logarithmic arms, dark dust lanes via fbm-noise planes, warm core glow; 5–7 instances at varied scales/tilts slowly rotating; camera weaves laterally between disc planes, skimming arm edges.
+- **Camera:** Lateral weave path; nearest galaxy fills frame at pass-through.
 - **Copy:** `Gravity braids hundreds of billions of suns into spirals.`
 - **Interactive:** Nearest spiral galaxy (fact card).
 
 ## EPOCH 6 — STELLAR FORGE (62% – 74%) · T + 4–9 Gyr
-- **Palette:** GOLD `#FFD75E`, ember ORANGE, magenta nebula clouds.
-- **Set piece [SIG]:** A supernova detonates ahead — expanding ring shockwave passes *through* the camera plane (screen-edge ripple via aberration spike); behind it, gold glitter particles seed billowing neon nebula clouds.
+- **Grade:** gold ember wash, exposure 1.1.
+- **Set piece [SIG]:** A supernova detonates ahead — expanding shockwave ring passes *through* the camera plane (screen-edge chromatic aberration spike); behind it gold-lit nebula billows seed from the blast; CC0 asteroid debris tumbles silhouetted against the glow.
 - **Camera:** Straight through the blast — brief overexposure, recovery.
 - **Copy:** `Dying stars forge the calcium in your bones, the iron in your blood.`
 - **Interactive:** Supernova remnant (fact card).
 
 ## EPOCH 7 — EVENT HORIZON (74% – 84%) · T + 9 Gyr
-- **Palette:** VOID `#05010F`, accretion ring gradient MAGENTA→CYAN.
-- **Set piece:** Black hole silhouette with blazing thin accretion ring; the spacetime grid visibly warps/bends around it (vertex displacement by radial falloff); photon-ring glint as camera arcs.
-- **Camera:** Wide lateral arc around the silhouette (half-orbit) — no crossing the horizon.
+- **Grade:** void `#000002`, bloom 2.0, DOF beat enabled (HIGH tier).
+- **Set piece:** Interstellar-grade black hole — thin blazing accretion disk (custom shader: doppler-brightened orbital noise, white-gold inner edge) seen at a low angle wrapping over and under the silhouette; razor photon ring; background stars visibly lensed/displaced near the horizon.
+- **Camera:** Wide lateral arc (half-orbit) — never crossing the disk plane edge-on.
 - **Copy:** `Here, even time runs out.`
 - **Interactive:** Black hole (fact card).
 
 ## EPOCH 8 — YOU ARE HERE (84% – 100%) · T + 9.2 → 13.8 Gyr
-- **Palette:** SUN GOLD `#FFF152`, planet accents full-spectrum, EARTH CYAN-BLUE `#38BDF8`.
-- **Set piece:** Protoplanetary disc collapses inward; planets snap into orbit one-by-one (staccato beats, 150ms apart); Sun ignites warm; Earth resolves last with a soft cyan atmosphere glow. Final move: crane pull-back-and-up revealing the whole system against deep space.
+- **Grade:** balanced natural, exposure 1.0.
+- **Set piece:** A protoplanetary disc of dust collapses inward; real-textured planets (NASA/Solar System Scope maps) snap into orbit one-by-one — staccato beats 150ms apart, each arrival a small gravitational settle; the Sun ignites last-warm; Earth resolves with atmosphere rim glow. Final move: crane pull-back-and-up revealing the whole system against the Milky Way panorama.
 - **Camera:** Crane reveal — the only big vertical move of the journey.
 - **Finale plaque copy (DOM overlay, fades in on crane settle):**
   - Line 1: `T + 13,800,000,000 YEARS`
   - Line 2 (display font): `YOU ARE HERE`
   - Body: `Every atom you're made of was forged in the fire you just scrolled through.`
-  - Credits row: `GENESIS.EXE — built for the 3D Websites Hackathon` + tech list link.
+  - Credits row: `GENESIS.EXE — built for the 3D Websites Hackathon` + attribution ledger link (ASSETS.md §7).
   - Button: `⟲ REWIND TIME`
 - **Interactive:** Earth (fact card).
 
@@ -95,6 +95,6 @@ Every epoch has: trigger range, honest time label, palette ref, camera move, set
 
 ## Pacing Rules
 
-- Fast-scroll test: full page in <5 s must still show every palette ≥300 ms (drives transition-band width).
+- Fast-scroll test: full page in <5s must still show every epoch grade ≥300ms (drives transition-band width).
 - No two adjacent epochs share a dominant hue family.
 - Every [SIG] moment owns ≥15% scroll distance of clear stage — never crowded by neighbors.

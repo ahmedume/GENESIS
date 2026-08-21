@@ -1,122 +1,108 @@
 # ===== FILE: DESIGN-SYSTEM.md =====
 # Design System: GENESIS.EXE
 
-One committed identity. If a choice doesn't reinforce "neon synthwave × cosmology," it's wrong.
+> **PIVOT (user decision):** Neon synthwave is DEAD. Art direction is now **CINEMATIC REALISM** —
+> a $2M sci-fi title sequence look built from real PBR assets, volumetric light, and film-grade
+> postprocessing. Every visual must survive the question: *"could this frame be from a space film?"*
 
 ---
 
-## 1. Color Tokens
+## 1. Visual Identity
+
+| Pillar | Rule |
+|--------|------|
+| Realism first | Real planet/sun textures (NASA / Solar System Scope), physically-plausible lighting, ACES tone mapping |
+| Light is the protagonist | Emissive sources (stars, sun, accretion disks) against true black voids; volumetric god rays where dust/gas exists |
+| Camera = cinema | Subtle handheld drift (≤0.5° noise), anamorphic-style flares, shallow DOF accents at set-piece moments only |
+| Grade | Filmic contrast, deep shadow crush, restrained teal/orange bias — NO neon saturation, no wireframes, no flat shading |
+| HUD contrast | UI stays precise/technical (thin lines, mono numerals) so the organic cosmos owns the beauty |
+
+## 2. Color Tokens
 
 ### Base
 | Token | Hex | Use |
 |-------|-----|-----|
-| VOID | `#05010F` | Page bg, deepest space |
-| DEEP | `#0B0221` | Fog bases, card glass tint |
-| WHITE-HOT | `#FFF7E6` | Singularity, flash frames |
+| VOID | `#000005` | Space background (true blacker) |
+| DEEP | `#0A0E18` | Fog bases, card glass tint |
+| WHITE-HOT | `#FFF7E6` | Ignition flash, young star cores |
 
-### Neon Set (accents only — never large flat fills)
-| Token | Hex |
-|-------|-----|
-| MAGENTA | `#FF2E88` |
-| HOT-ORANGE | `#FF6B1A` |
-| AMBER | `#FFB347` |
-| CRIMSON | `#C2185B` |
-| CYAN | `#00F0FF` |
-| TEAL | `#01CDCD` |
-| VIOLET | `#7B2FBE` |
-| PURPLE | `#B967FF` |
-| BLUE | `#2E5BFF` |
-| GOLD | `#FFD75E` |
-| SUN | `#FFF152` |
-| EARTH-BLUE | `#38BDF8` |
+### Grading accents (post/color-grade level — never raw geometry colors)
+| Token | Hex | Use |
+|-------|-----|-----|
+| STEEL-BLUE | `#6FA8C9` | Cold starlight rim, Earth atmosphere |
+| EMBER | `#FF8A3D` | Young suns, supernova warmth |
+| VIOLET-DUST | `#8A7BC8` | Nebula dust scattering (physically motivated, not decoration) |
+| SIGNAL-CYAN | `#00F0FF` | UI/HUD accent ONLY (interactive affordances) |
 
-### Per-Epoch Grading Table
-| Epoch | fogColor | accentLight | bloomStrength |
-|-------|----------|-------------|---------------|
-| Singularity | `#05010F` | WHITE-HOT | 1.4 |
-| Inflation | `#16042E` | MAGENTA | 1.6 |
-| Quark Soup | `#1C0512` | HOT-ORANGE | 1.5 |
-| First Light | `#240A18` | AMBER→CRIMSON lerp | 1.2 |
-| Cosmic Dawn | `#030112` | CYAN | 1.8 |
-| Galaxy Era | `#0A0430` | PURPLE/BLUE | 1.5 |
-| Stellar Forge | `#1A0A08` | GOLD | 1.7 |
-| Event Horizon | `#020108` | ring MAGENTA→CYAN gradient | 2.0 |
-| Solar System | `#04021A` | SUN | 1.3 |
+### Per-Epoch Grade Table (drives EpochDirector)
+| Epoch | fogColor | exposure | bloom | grade bias |
+|-------|----------|----------|-------|------------|
+| Singularity | `#000005` | 0.9 | 1.2 | neutral |
+| Inflation | `#0A0612` | 1.15 | 1.3 | warm violet haze |
+| Quark Soup | `#12060A` | 1.25 | 1.3 | ember orange plasma |
+| First Light | `#160A10` | 1.05 | 1.0 | amber→crimson cooling |
+| Cosmic Dawn | `#010108` | 0.85 | 1.6 | cold blue starbursts |
+| Galaxy Era | `#04040E` | 1.0 | 1.3 | violet-dust lanes |
+| Stellar Forge | `#100806` | 1.1 | 1.4 | gold ember wash |
+| Event Horizon | `#000002` | 0.95 | 2.0 | disk white-gold vs void |
+| Solar System | `#020208` | 1.0 | 1.0 | balanced natural |
 
-### UI
-- Text primary: `#F4EEFF`; secondary: rgba(244,238,255,0.64)
-- Grid line: `rgba(255,46,136,0.28)`; success/ok in boot: `#01CDCD`
-- Glass card: `rgba(11,2,33,0.55)`, backdrop-blur 14px, 1px border from MAGENTA→CYAN gradient, radius 14px
+## 3. Typography (unchanged roles)
 
----
+| Role | Font | Notes |
+|------|------|-------|
+| Display | Audiowide | Titles, buttons; UPPERCASE, tracking +0.06em |
+| Body | Space Grotesk | Fact cards, paragraphs; line-height 1.6 |
+| Terminal/HUD | VT323 | Cosmic Clock, boot lines; ≥18px |
 
-## 2. Typography
+Scale: display `clamp(44px, 9vw, 128px)` · epoch label `clamp(22px, 3.4vw, 40px)` · body `clamp(15px, 1.4vw, 18px)` · HUD `clamp(16px, 1.6vw, 22px)`.
 
-| Role | Font | Fallback stack | Notes |
-|------|------|----------------|-------|
-| Display | Audiowide | `"Audiowide", "Space Grotesk", system-ui, sans-serif` | Titles, epoch labels, buttons; UPPERCASE, tracking +0.06em |
-| Body | Space Grotesk | `"Space Grotesk", system-ui, sans-serif` | Paragraphs, fact cards; sentence case, line-height 1.6 |
-| Terminal/HUD | VT323 | `"VT323", ui-monospace, monospace` | Cosmic Clock numerals, boot lines; sizes ≥ 18px (thin pixel face) |
+## 4. Motion Tokens (unchanged)
 
-Scale (clamp): display `clamp(44px, 9vw, 128px)` · epoch label `clamp(22px, 3.4vw, 40px)` · body `clamp(15px, 1.4vw, 18px)` · HUD `clamp(16px, 1.6vw, 22px)`.
+| Token | Value |
+|-------|-------|
+| ease-cinematic | `cubic-bezier(0.16, 1, 0.3, 1)` |
+| dur-fast/mid/slow/epic | 150ms / 300ms / 600ms / 1200ms |
+| scroll damping λ | 4 |
+| camera drift | ≤0.5° Perlin-noise handheld sway, always on (reduced-motion: off) |
 
----
+## 5. Postprocessing Chain (order matters)
 
-## 3. Motion Tokens
+1. **Bloom** — threshold 0.75, radius 0.85, strength per grade table (× tier scale); LOW tier renders at half-res
+2. **DepthOfField** — OFF by default; enabled only at set-piece beats (supernova, black hole approach) on HIGH tier
+3. **Vignette** — darkness 0.55, offset 0.20
+4. **ChromaticAberration** — envelope-animated: title reveal, IGNITION, supernova pass, black-hole arc only
+5. **Noise/grain** — opacity 0.03, filmic
+6. Tone mapping: **ACESFilmic**, exposure per grade table
 
-| Token | Value | Use |
-|-------|-------|-----|
-| ease-cinematic | `cubic-bezier(0.16, 1, 0.3, 1)` | All DOM reveals |
-| ease-snap | `cubic-bezier(0.55, 0, 1, 0.45)` | Button presses |
-| dur-fast / mid / slow / epic | 150ms / 300ms / 600ms / 1200ms | Micro / reveals / transitions / ignition |
-| scroll damping λ | 4 (`damp(cur, target, 4, delta)`) | Camera + clock |
-| parallax gain | ±2° max camera offset, lerped at 6/s | Pointer move |
+CRT scanline overlay: REMOVED (was synthwave motif). Boot screen keeps terminal type only.
 
-Reduced motion: all of the above disabled; instant states.
+## 6. Component Specs
 
----
-
-## 4. Postprocessing & Screen Effects
-
-| Effect | Setting | Notes |
-|--------|---------|-------|
-| Bloom | threshold 0.72 · strength per grading table (× tier scale) · radius 0.85 | The look lives here — budget carefully |
-| ChromaticAberration | offset ≤ (0.0008, 0.0008), animated envelope | Only during: title reveal, IGNITION flash, supernova pass, black-hole arc |
-| Vignette | darkness 0.62, offset 0.18 | Constant |
-| Noise/grain | opacity 0.035 | Constant; CSS overlay allowed instead of pass on `low` |
-| Scanlines | CSS repeating-linear-gradient, opacity 0.04 | Fixed overlay div, pointer-events none |
-
-CRT motifs: boot power-off collapse; occasional single-frame flicker on epoch label change (opacity keyframe, 90ms); `ok` status in TEAL.
-
----
-
-## 5. Component Specs
-
-### Fact Card (glass)
-- Width min(360px, 88vw); padding 20px; name row = Audiowide 18px + era chip (VT323, bordered)
-- Fact body Space Grotesk 16px/1.6 secondary color
-- Entry: translateX(24px)+fade 300ms ease-cinematic; exit reverse
-- Glow shadow: `0 0 32px rgba(255,46,136,0.18)` — subtle, never pulsing
+### Fact Card
+- Glass: `rgba(10,14,24,0.6)`, blur 14px, 1px border `rgba(111,168,201,0.35)`, radius 14px
+- Name row Audiowide 18px; era chip VT323 bordered; body Space Grotesk 16px/1.6 secondary color
+- Entry translateX(24px)+fade 300ms ease-cinematic
 
 ### Cosmic Clock (left rail)
-- 56px wide fixed column; vertical tick ruler (CSS gradient ticks every 8px, major every 5th taller + CYAN)
-- Readout rotated? No — horizontal readout block top-left below logo mark; ruler is the vertical element
+- Thin vertical ruler, ticks `rgba(255,255,255,0.22)`, majors `SIGNAL-CYAN`
+- Readout VT323 horizontal block top-left
 
 ### Buttons
-- Ghost style: transparent fill, 1px neon border (MAGENTA or CYAN), Audiowide 14px uppercase, hover = border glow + slight scale(1.03), active scale(0.97)
+- Ghost: transparent fill, 1px border `SIGNAL-CYAN` @ 60%, Audiowide 14px uppercase
+- Hover: border brightens + glow `0 0 24px rgba(0,240,255,0.25)`; active scale(0.97)
 
-### Scroll cue
-- Chevron SVG animating translateY loop 1.6s; label VT323 `SCROLL TO BEGIN TIME`
+### Loading/Boot
+- Black screen, VT323 boot lines streaming, thin progress hairline (CYAN), percentage readout
+- No CRT collapse animation (synthwave relic) — exit = 400ms fade through black
 
----
+## 7. Anti-Slop Rules (hard constraints)
 
-## 6. Anti-Slop Rules (hard constraints)
-
-1. NEVER default Tailwind blue/purple (#3B82F6/#8B5CF6) anywhere.
-2. NEVER emoji as icons — lucide-react line icons only.
-3. NEVER lorem ipsum — copy comes from STORYBOARD.md verbatim.
-4. NEVER center-align everything — the layout system is asymmetric by design (clock left, content right-weighted).
-5. NEVER text drop-shadows for "style" — glow belongs to geometry via bloom.
-6. NEVER more than one glass-blur surface visible at once (fact cards are the exception class).
-7. NEVER animate font-size; animate transform/opacity only.
-8. NEVER mix radius systems — 14px cards, 999px pills/buttons, sharp corners elsewhere.
+1. NEVER default Tailwind blue/purple anywhere.
+2. NEVER emoji as icons — lucide-react only.
+3. NEVER lorem ipsum — copy verbatim from STORYBOARD.md.
+4. NEVER centered-everything layout — asymmetric HUD system (clock left, content right-weighted).
+5. NEVER neon-saturated geometry or wireframe-as-decoration — color comes from physics (emission, scattering) and grade.
+6. NEVER visible low-effort tiling/repeating textures on planets — use seamless NASA/Solar System Scope maps with correct rotation.
+7. NEVER animate font-size; transform/opacity only.
+8. NEVER more than one glass-blur surface open at once.

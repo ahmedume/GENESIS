@@ -12,12 +12,13 @@ cosmic time: one continuous scroll journey from the Big Bang (T=0) to the presen
 billion years). The scrollbar becomes a **Cosmic Clock**, page sections become cosmological epochs,
 and a dolly camera travels through nine visually distinct eras — singularity, inflation, quark soup,
 first light (CMB), cosmic dawn, galaxies, supernovae, a black hole flyby, and finally our solar
-system with a "YOU ARE HERE" finale. Art direction is **neon synthwave**: flat-shaded low-poly
-geometry, bloom-drenched magenta/cyan/violet gradients, a perspective neon grid that represents
-spacetime itself and ripples with gravitational waves, CRT scanline overlays, and chromatic-aberration
-typography. It must make a first-time visitor stop within 5 seconds and say "wow" — the explicit
-judging criterion. Judges are high-school students browsing quickly; atmosphere, lighting, and polish
-beat technical complexity. Content must be appropriate for all audiences.
+system with a "YOU ARE HERE" finale. Art direction is **CINEMATIC REALISM** (user decision — replaced
+synthwave): real PBR planet/sun textures (NASA / Solar System Scope), Poly Haven HDRI lighting,
+volumetric nebulae, an Interstellar-grade accretion-disk shader, ACES tone mapping, film grain,
+anamorphic flares, restrained teal/orange grade. It must make a first-time visitor stop within 5
+seconds and say "wow" — the explicit judging criterion. Judges are high-school students browsing
+quickly; atmosphere, lighting, and polish beat technical complexity. Content must be appropriate for
+all audiences.
 
 ## Your Task
 
@@ -42,7 +43,7 @@ objects, spacetime-grid ripple shader); add the CRT boot-screen loader; enforce 
 - Animation: gsap 3.13 (HUD text reveals only — camera is driven by our rig), maath for damping
 - State: zustand v5 (quality tier, audio on/off, active epoch, open fact card)
 - Styling: Tailwind CSS v4 + Google Fonts (Audiowide, Space Grotesk, VT323)
-- Audio: one CC0 synthwave ambient loop via WebAudio API, off by default
+- Audio: one CC0 deep-space ambience loop via WebAudio API, off by default
 - Deployment: TBD — Vercel recommended default (see DEPLOYMENT.md); Dockerfile required regardless
 
 ## Output Requirements
