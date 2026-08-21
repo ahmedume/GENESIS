@@ -56,7 +56,7 @@ Never silently choose between materially different directions.
 8. Design tokens from DESIGN-SYSTEM.md (hex/type/motion) — no ad-hoc values.
 9. Production-grade output: error states handled (boot stall, context loss, no WebGL), no console errors.
 10. Capture phase screenshots into `imgs/` per QA-SECURITY.md §5 and run QA gates before reporting done.
-11. Keep the Dockerfile working after dependency or build changes (`docker build` green = part of done).
+11. Docker comes LAST: no containerization work during Phases 1–6 (user decision); the Dockerfile is built and verified in Phase 7 only.
 
 ## NEVER
 

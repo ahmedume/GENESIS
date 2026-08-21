@@ -20,9 +20,9 @@ the user and capture screenshots into `imgs/` per QA-SECURITY.md.
 3. Folder skeleton per SDS.md §2 (empty files with header comments).
 4. Lenis + useScrollProgress + useDampedProgress wired; spacer 1600vh.
 5. Canvas + CameraRig sampling a placeholder straight path; fog VOID color.
-6. Dockerfile + .dockerignore + .env.example (empty placeholders).
+6. `.env.example` (empty placeholders only). *(Dockerfile deferred to Phase 7 by decision — see DEPLOYMENT.md.)*
 
-**Deliverable:** `pnpm dev` shows smooth damped flythrough on scroll; `docker build` succeeds.
+**Deliverable:** `pnpm dev` shows smooth damped flythrough on scroll.
 **Out of scope:** Any epoch content, HUD, postprocessing.
 
 ---
@@ -115,10 +115,11 @@ the user and capture screenshots into `imgs/` per QA-SECURITY.md.
 **Depends on:** Phase 6.
 
 **Tasks:**
-1. Capture final screenshot set into `imgs/` (SUBMISSION-CHECKLIST shot list).
-2. Record demo video (script in checklist, 60–90s).
-3. Write project description + tech/tools list from this package.
-4. Public repo cleanup: README run instructions, no dead code, no secrets (final scan).
-5. Submit on Devpost Aug 30 evening; Aug 31 = buffer for fixes.
+1. Dockerize: Dockerfile (multi-stage per DEPLOYMENT.md §3) + `.dockerignore` + `docker build` verification.
+2. Capture final screenshot set into `imgs/` (SUBMISSION-CHECKLIST shot list).
+3. Record demo video (script in checklist, 60–90s).
+4. Write project description + tech/tools list from this package.
+5. Public repo cleanup: README run instructions, no dead code, no secrets (final scan).
+6. Submit on Devpost Aug 30 evening; Aug 31 = buffer for fixes.
 
-**Deliverable:** Submitted entry URL + green SUBMISSION-CHECKLIST.md.
+**Deliverable:** Docker image builds + submitted entry URL + green SUBMISSION-CHECKLIST.md.

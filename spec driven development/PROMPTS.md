@@ -32,7 +32,7 @@ Execute BUILD_PLAN.md Phase 1 exactly.
 - Create the full SDS.md §2 folder skeleton — empty files with one-line purpose comments.
 - Wire Lenis → useScrollProgress → zustand; 1600vh spacer; hidden native scrollbar.
 - CameraRig sampling a straight placeholder path with damped progress (maath).
-- Write Dockerfile + .dockerignore + .env.example (empty placeholders only) at repo root; verify docker build passes.
+- Write .env.example (empty placeholders only) at repo root. Dockerfile is DEFERRED to Phase 7 — do not create it now.
 Deliverable check: pnpm dev = damped flythrough on scroll. Report bundle sizes vs PERFORMANCE-BUDGET.md §1. Stop after reporting — do not start Phase 2.
 ```
 
@@ -98,6 +98,7 @@ Report results gate-by-gate. Stop after reporting.
 
 ```
 Execute BUILD_PLAN.md Phase 7 exactly.
+Dockerize last: Dockerfile (multi-stage per DEPLOYMENT.md §3) + .dockerignore; verify docker build serves the bundle.
 Capture SUBMISSION-CHECKLIST §B shot list into imgs/submission/ (+ mobile shots), record demo video per §C
 script, draft Devpost description per §D outline, assemble tech list from TECH_STACK.md, clean repo
 (README run instructions, dead-code sweep, final secret scan per QA-SECURITY.md §1).

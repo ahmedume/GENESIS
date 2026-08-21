@@ -1,8 +1,8 @@
 # ===== FILE: DEPLOYMENT.md =====
 # Deployment: GENESIS.EXE
 
-> **Status:** Deploy target DECISION PENDING (user choice). Docker is mandatory regardless —
-> it keeps the decision swappable in minutes. Default recommendation when deciding: **Vercel**.
+> **Status:** Deploy target DECISION PENDING (user choice). Dockerfile is a standing requirement but
+> is **built in Phase 7 (last)** per user decision — it exists to keep the host swappable in minutes.
 
 ---
 

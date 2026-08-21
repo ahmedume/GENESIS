@@ -28,9 +28,9 @@ systems, custom shader materials, and postprocessing (Bloom, ChromaticAberration
 the HUD overlay (Cosmic Clock with log-time readout, epoch labels, fact cards, sound toggle, rewind
 button); wire interactivity (mouse parallax, cursor-reactive particle attraction, clickable celestial
 objects, spacetime-grid ripple shader); add the CRT boot-screen loader; enforce the
-`prefers-reduced-motion` fallback; optimize to PERFORMANCE-BUDGET.md; containerize per DEPLOYMENT.md;
-deploy to the chosen host with correct meta/OG tags; and prepare submission artifacts per
-SUBMISSION-CHECKLIST.md.
+  `prefers-reduced-motion` fallback; optimize to PERFORMANCE-BUDGET.md; deploy to the chosen host with
+  correct meta/OG tags; and prepare submission artifacts per SUBMISSION-CHECKLIST.md. Dockerization is
+  deferred to the final phase (user decision).
 
 ## Tech Stack
 
@@ -51,7 +51,7 @@ SUBMISSION-CHECKLIST.md.
 - All files < 300 lines; components split by epoch scene and concern; maximum code compaction — if it
   fits in a function, it stays a function
 - `pnpm dev` serves at localhost:5173; `pnpm build` passes with zero TypeScript errors
-- Docker image builds and serves the production bundle
+- Dockerization is DEFERRED to the final phase by user decision — build it last, per DEPLOYMENT.md
 - Working states: boot screen → singularity hero → full time-journey → finale plaque, plus
   reduced-motion static mode
 
