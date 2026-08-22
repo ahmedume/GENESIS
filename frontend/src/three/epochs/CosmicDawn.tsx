@@ -2,20 +2,22 @@ import { useMemo, useRef } from 'react'
 import { useFrame } from '@react-three/fiber'
 import { AdditiveBlending, CanvasTexture, Group, Mesh, MeshBasicMaterial } from 'three'
 import { journey } from '../../hooks/useDampedProgress'
+import { pointAt } from '../../lib/cameraPath'
 
 interface Star {
-  position: [number, number, number]
+  u: number // curve anchor — position
   igniteAt: number // scroll progress threshold
+  offset: [number, number]
 }
 
 const STARS: Star[] = [
-  { position: [-16, 8, -196], igniteAt: 0.385 },
-  { position: [21, -6, -206], igniteAt: 0.4 },
-  { position: [-9, -13, -216], igniteAt: 0.415 },
-  { position: [14, 11, -226], igniteAt: 0.43 },
-  { position: [-24, 2, -236], igniteAt: 0.443 },
-  { position: [5, -18, -244], igniteAt: 0.454 },
-  { position: [26, 14, -252], igniteAt: 0.464 },
+  { u: 0.395, igniteAt: 0.385, offset: [-16, 8] },
+  { u: 0.408, igniteAt: 0.400, offset: [21, -6] },
+  { u: 0.420, igniteAt: 0.415, offset: [-9, -13] },
+  { u: 0.432, igniteAt: 0.430, offset: [14, 11] },
+  { u: 0.444, igniteAt: 0.443, offset: [-24, 2] },
+  { u: 0.456, igniteAt: 0.454, offset: [5, -18] },
+  { u: 0.468, igniteAt: 0.464, offset: [26, 14] },
 ]
 
 function disc() {
@@ -51,10 +53,19 @@ export function CosmicDawn() {
     })
   })
 
+  const anchors = useMemo(
+    () =>
+      STARS.map((s) => {
+        const p = pointAt(s.u)
+        return [p.x + s.offset[0], p.y + s.offset[1], p.z] as [number, number, number]
+      }),
+    [],
+  )
+
   return (
     <group>
       {STARS.map((s, i) => (
-        <group key={i} ref={(el) => void (groups.current[i] = el)} position={s.position}>
+        <group key={i} ref={(el) => void (groups.current[i] = el)} position={anchors[i]}>
           <mesh>
             <sphereGeometry args={[0.35, 16, 16]} />
             <meshBasicMaterial color="#eaf6ff" transparent toneMapped={false} />

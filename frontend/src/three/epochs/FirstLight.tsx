@@ -1,6 +1,7 @@
 import { useMemo, useRef } from 'react'
 import { useFrame } from '@react-three/fiber'
 import { AdditiveBlending, DoubleSide, ShaderMaterial } from 'three'
+import { pointAt } from '../../lib/cameraPath'
 
 const VERT = /* glsl */ `
   varying vec3 vPos;
@@ -43,13 +44,14 @@ const FRAG = /* glsl */ `
 export function FirstLight() {
   const mat = useRef<ShaderMaterial>(null)
   const uniforms = useMemo(() => ({ uTime: { value: 0 } }), [])
+  const pos = useMemo(() => pointAt(0.31).toArray() as [number, number, number], [])
 
   useFrame((_, delta) => {
     if (mat.current) mat.current.uniforms.uTime.value += delta
   })
 
   return (
-    <mesh position={[0, 0, -160]}>
+    <mesh position={pos}>
       <sphereGeometry args={[58, 48, 48]} />
       <shaderMaterial
         ref={mat}

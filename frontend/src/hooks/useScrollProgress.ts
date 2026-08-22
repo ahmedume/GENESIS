@@ -5,11 +5,19 @@ import { useStore } from '../state/store'
 
 const clamp01 = (v: number) => Math.min(1, Math.max(0, v))
 
+let lenisInstance: Lenis | null = null
+
+/** REWIND TIME (FR-11): long eased return to the Big Bang. Interruptible by any user scroll. */
+export function rewindToSurface() {
+  lenisInstance?.scrollTo(0, { duration: 8 })
+}
+
 /** Owns the single Lenis instance; mirrors raw scroll into `journey` every frame (SRS FR-01).
  *  Scroll stays locked until the boot gate lifts (FR-01 error case). */
 export function useScrollProgress() {
   useEffect(() => {
     const lenis = new Lenis()
+    lenisInstance = lenis
     lenis.stop()
     const unlock = useStore.subscribe((s, prev) => {
       if (s.booted !== prev.booted) s.booted ? lenis.start() : lenis.stop()
@@ -28,6 +36,7 @@ export function useScrollProgress() {
       cancelAnimationFrame(raf)
       lenis.destroy()
       journey.raw = 0
+      if (lenisInstance === lenis) lenisInstance = null
     }
   }, [])
 }

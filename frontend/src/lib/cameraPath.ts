@@ -21,3 +21,9 @@ export const journeyCurve = new CatmullRomCurve3(POINTS.map(([x, y, z]) => new V
 
 /** How far ahead along the curve the camera aims (SDS §6). */
 export const LOOKAHEAD = 0.004
+
+/** Canonical content placement — world position at journey parameter u.
+ *  Scene set pieces anchor HERE so they align with the arc-length camera path exactly. */
+export function pointAt(u: number): Vector3 {
+  return journeyCurve.getPointAt(Math.min(Math.max(u, 0), 1))
+}
