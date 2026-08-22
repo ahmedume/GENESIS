@@ -7,8 +7,11 @@ import { useStore } from '../state/store'
 const IGNITE_AT = 0.02 // SRS FR-03
 const FLASH_MS = 250
 const RING_MS = 1200
-const BASE_EXPOSURE = 0.9
-const SPIKE = 1.4
+const SETTLE_MS = 900
+const SPIKE = 1.4 // exposure boost composed by EpochDirector
+
+/** Flash envelope channel — EpochDirector adds this to the graded exposure each frame. */
+export const ignitionFlash = { boost: 0 }
 
 const reducedMotion = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
@@ -20,7 +23,7 @@ export function Ignition() {
   const ring = useRef<Mesh>(null)
   const startedAt = useRef<number | null>(null)
 
-  useFrame(({ clock, camera, gl }) => {
+  useFrame(({ clock, camera }) => {
     const s = useStore.getState()
     if (!s.booted || s.ignited) return
 
@@ -31,8 +34,8 @@ export function Ignition() {
     if (startedAt.current == null || !ring.current) return
 
     const e = (clock.elapsedTime - startedAt.current) * 1000
-    gl.toneMappingExposure =
-      e < FLASH_MS ? BASE_EXPOSURE + SPIKE * (e / FLASH_MS) : BASE_EXPOSURE + SPIKE * Math.max(0, 1 - (e - FLASH_MS) / 900)
+    ignitionFlash.boost =
+      e < FLASH_MS ? SPIKE * (e / FLASH_MS) : SPIKE * Math.max(0, 1 - (e - FLASH_MS) / SETTLE_MS)
 
     const k = Math.min(e / RING_MS, 1)
     ring.current.visible = k < 1

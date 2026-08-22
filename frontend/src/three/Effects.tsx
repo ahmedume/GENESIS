@@ -1,15 +1,25 @@
-import { EffectComposer, Bloom, Vignette } from '@react-three/postprocessing'
+import { useRef } from 'react'
+import { useFrame } from '@react-three/fiber'
+import { Bloom, EffectComposer, Noise, Vignette } from '@react-three/postprocessing'
+import type { BloomEffect } from 'postprocessing'
+import { grade } from './EpochDirector'
 
 /**
- * Postprocessing base stack (Phase 2): Bloom + Vignette per DESIGN-SYSTEM §5.
- * ACES tone mapping + exposure are driven by R3F defaults and the Ignition envelope.
- * ChromaticAberration / Noise passes arrive with later phases; tier gating in Phase 6.
+ * Postprocessing chain (DESIGN-SYSTEM §5): Bloom → Noise(grain) → Vignette.
+ * Bloom strength follows the EpochDirector grade table; ChromaticAberration/DOF
+ * envelopes arrive with their set-piece beats (Phases 3–4); tier gating lands Phase 6.
  */
 export function Effects() {
+  const bloom = useRef<BloomEffect>(null)
+
+  useFrame(() => {
+    if (bloom.current) bloom.current.intensity = grade.bloom
+  })
+
   return (
     <EffectComposer multisampling={4}>
-      {/* threshold/strength/radius per grade table — Singularity epoch values */}
-      <Bloom intensity={1.2} luminanceThreshold={0.75} luminanceSmoothing={0.1} radius={0.85} mipmapBlur />
+      <Bloom ref={bloom} intensity={1.2} luminanceThreshold={0.75} luminanceSmoothing={0.1} radius={0.85} mipmapBlur />
+      <Noise opacity={0.045} premultiply />
       <Vignette darkness={0.55} offset={0.2} />
     </EffectComposer>
   )
