@@ -1,22 +1,14 @@
 @import "tailwindcss";
 
-/* ===== DESIGN-SYSTEM.md tokens ===== */
+/* ===== DESIGN-SYSTEM.md tokens — cinematic realism ===== */
 :root {
-  --void: #05010f;
-  --deep: #0b0221;
+  --void: #000005;
+  --deep: #0a0e18;
   --white-hot: #fff7e6;
-  --magenta: #ff2e88;
-  --hot-orange: #ff6b1a;
-  --amber: #ffb347;
-  --crimson: #c2185b;
-  --cyan: #00f0ff;
-  --teal: #01cdcd;
-  --violet: #7b2fbe;
-  --purple: #b967ff;
-  --blue: #2e5bff;
-  --gold: #ffd75e;
-  --sun: #fff152;
-  --earth-blue: #38bdf8;
+  --steel-blue: #6fa8c9;
+  --ember: #ff8a3d;
+  --violet-dust: #8a7bc8;
+  --signal-cyan: #00f0ff;
   --text-primary: #f4eeff;
   --text-secondary: rgb(244 238 255 / 64%);
   --font-display: "Audiowide", "Space Grotesk", system-ui, sans-serif;
