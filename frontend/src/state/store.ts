@@ -4,10 +4,12 @@ export type QualityTier = 'low' | 'medium' | 'high'
 
 interface AppState {
   booted: boolean
+  ignited: boolean
   audioEnabled: boolean
   scrollProgress: number
   qualityTier: QualityTier
   setBooted: (booted: boolean) => void
+  setIgnited: (ignited: boolean) => void
   toggleAudio: () => void
   setQualityTier: (tier: QualityTier) => void
 }
@@ -15,10 +17,12 @@ interface AppState {
 /** Global UI state only. Per-frame values flow through `journey` (useDampedProgress), never here. */
 export const useStore = create<AppState>((set) => ({
   booted: false,
+  ignited: false,
   audioEnabled: false,
   scrollProgress: 0,
   qualityTier: 'high',
   setBooted: (booted) => set({ booted }),
+  setIgnited: (ignited) => set({ ignited }),
   toggleAudio: () => set((s) => ({ audioEnabled: !s.audioEnabled })),
   setQualityTier: (qualityTier) => set({ qualityTier }),
 }))

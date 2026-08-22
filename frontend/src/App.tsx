@@ -1,6 +1,7 @@
 import { Canvas } from '@react-three/fiber'
 import { useScrollProgress } from './hooks/useScrollProgress'
 import { Scene } from './three/Scene'
+import { Hud } from './hud/Hud'
 
 /** Persistent WebGL world behind a fixed-height scroll track; DOM HUD overlays arrive in later phases. */
 export default function App() {
@@ -15,6 +16,7 @@ export default function App() {
       </div>
       {/* Scroll track — total journey height per STORYBOARD.md */}
       <main className="relative h-[1600vh]" aria-label="GENESIS.EXE journey" />
+      <Hud />
     </>
   )
 }
