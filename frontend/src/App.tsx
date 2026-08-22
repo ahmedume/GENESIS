@@ -17,6 +17,7 @@ export default function App() {
       {/* Scroll track — total journey height per STORYBOARD.md */}
       <main className="relative h-[1600vh]" aria-label="GENESIS.EXE journey" />
       <Hud />
+      <div className="grain" aria-hidden />
     </>
   )
 }
