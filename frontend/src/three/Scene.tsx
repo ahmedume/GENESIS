@@ -5,6 +5,9 @@ import { Ignition } from './Ignition'
 import { Effects } from './Effects'
 import { EpochDirector } from './EpochDirector'
 import { Inflation } from './epochs/Inflation'
+import { QuarkSoup } from './epochs/QuarkSoup'
+import { FirstLight } from './epochs/FirstLight'
+import { CosmicDawn } from './epochs/CosmicDawn'
 
 /** Persistent canvas contents — mounts once, never unmounts ("global canvas" pattern). */
 export function Scene() {
@@ -17,8 +20,11 @@ export function Scene() {
       <Starfield />
       <Singularity />
       <Ignition />
+      {/* EPOCHS 1–4 (Phase 3); galaxy era onward lands in Phase 4 */}
       <Inflation />
-      {/* QuarkSoup · FirstLight · CosmicDawn land next (Phase 3b); later epochs Phase 4 */}
+      <QuarkSoup />
+      <FirstLight />
+      <CosmicDawn />
       <Effects />
     </>
   )
