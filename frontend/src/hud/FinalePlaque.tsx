@@ -11,10 +11,15 @@ export function FinalePlaque() {
 
   useEffect(() => {
     let raf = 0
+    let last = false
     const check = () => {
       const p = journey.raw
-      if (p > SHOW_AT) setShow(true)
-      else if (p < HIDE_BELOW) setShow(false)
+      // hysteresis equivalent of the old threshold pair; only touches React state on change
+      const next = p > SHOW_AT || (p >= HIDE_BELOW && last)
+      if (next !== last) {
+        last = next
+        setShow(next)
+      }
       raf = requestAnimationFrame(check)
     }
     raf = requestAnimationFrame(check)

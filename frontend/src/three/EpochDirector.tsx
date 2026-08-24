@@ -18,6 +18,9 @@ const ca = new Color()
 const cb = new Color()
 const blended = new Color()
 
+// Pre-parsed once — Color.set(string) re-parses hex every call, and this runs per frame
+const FOG_COLORS = EPOCHS.map((e) => new Color(e.grade.fog))
+
 /**
  * Single source of per-frame grading (SDS §6): blends fog color/density, exposure and bloom
  * across transition bands centered on epoch boundaries. Mutates scene directly — zero React state.
@@ -38,8 +41,8 @@ export function EpochDirector() {
     const half = TRANSITION_BAND / 2
     const k = i === EPOCHS.length - 1 ? 0 : smoothstep(b.scrollStart - half, b.scrollStart + half, p)
 
-    ca.set(a.grade.fog)
-    cb.set(b.grade.fog)
+    ca.copy(FOG_COLORS[i])
+    cb.copy(FOG_COLORS[Math.min(i + 1, EPOCHS.length - 1)])
     blended.copy(ca).lerp(cb, k)
     ;(scene.background as Color)?.copy(blended)
 

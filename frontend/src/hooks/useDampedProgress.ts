@@ -4,7 +4,7 @@ import { damp } from 'maath/easing'
 /** Shared raw/damped progress channel — render loops read this object, never React state (SDS §5). */
 export const journey = { raw: 0, damped: 0 }
 
-const LAMBDA = 4 // scroll "weight" per SRS FR-01 / DESIGN-SYSTEM motion tokens
+const LAMBDA = 6.5 // scroll "weight" — raised from 4 to cut input→camera latency (~170ms vs ~250ms settle) while keeping the weighted feel
 const MAX_DELTA = 0.1 // tab-switch guard
 
 /** Advances shared damping inside the R3F frame loop. Mount once inside <Canvas>; read `journey`. */

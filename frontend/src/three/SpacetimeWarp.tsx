@@ -39,11 +39,13 @@ export function SpacetimeWarp() {
 
   useFrame(({ clock }) => {
     const intensity = intensityAt(journey.damped)
+    // fully idle outside the window — no color HSL math, no drift
+    if (intensity <= 0) return
     if (mat.current) {
       mat.current.opacity = intensity * 0.8
       mat.current.color.setHSL(0.75 + Math.sin(clock.elapsedTime * 0.2) * 0.02, 0.6, 0.6)
     }
-    if (group.current && intensity > 0) {
+    if (group.current) {
       // slow forward drift sells the stretch without fighting the camera path
       group.current.position.z = ((clock.elapsedTime * 14) % DEPTH) - DEPTH / 2
     }
@@ -52,7 +54,7 @@ export function SpacetimeWarp() {
   return (
     <group ref={group}>
       <lineSegments geometry={geometry}>
-        <lineBasicMaterial ref={mat} transparent blending={AdditiveBlending} depthWrite={false} fog={false} />
+        <lineBasicMaterial ref={mat} transparent opacity={0} blending={AdditiveBlending} depthWrite={false} fog={false} />
       </lineSegments>
     </group>
   )

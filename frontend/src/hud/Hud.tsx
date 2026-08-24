@@ -15,7 +15,12 @@ function HeroOverlay() {
     if (ignited) return
     let raf = 0
     const check = () => {
-      if (journey.raw > FADE_AT) setFaded(true)
+      // one-way fade: stop polling entirely once past the threshold instead of
+      // running a perpetual setState loop that competes with the render loop
+      if (journey.raw > FADE_AT) {
+        setFaded(true)
+        return
+      }
       raf = requestAnimationFrame(check)
     }
     raf = requestAnimationFrame(check)

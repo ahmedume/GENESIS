@@ -20,7 +20,7 @@ export const useStore = create<AppState>((set) => ({
   ignited: false,
   audioEnabled: false,
   scrollProgress: 0,
-  qualityTier: 'high',
+  qualityTier: 'medium', // conservative boot — governor upgrades capable machines after 3 good seconds
   setBooted: (booted) => set({ booted }),
   setIgnited: (ignited) => set({ ignited }),
   toggleAudio: () => set((s) => ({ audioEnabled: !s.audioEnabled })),

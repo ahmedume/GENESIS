@@ -12,18 +12,33 @@ export function rewindToSurface() {
 }
 
 /** Owns the single Lenis instance; mirrors raw scroll into `journey` every frame (SRS FR-01).
- *  Scroll stays locked until the boot gate lifts (FR-01 error case). */
+ *  Scroll stays locked until the boot gate lifts (FR-01 error case).
+ *  Lenis steps in its OWN rAF, decoupled from the WebGL frame loop — if the GPU stalls,
+ *  page scroll (and the DOM HUD) still advances at display refresh instead of rubber-banding. */
 export function useScrollProgress() {
   useEffect(() => {
-    const l = new Lenis()
+    const l = new Lenis({ autoRaf: false })
     lenis.current = l
     l.stop()
+
+    let raf = 0
+    const loop = (now: number) => {
+      l.raf(now)
+      journey.raw = Math.min(1, Math.max(0, l.progress))
+      raf = requestAnimationFrame(loop)
+    }
+    raf = requestAnimationFrame(loop)
+
     const unlock = useStore.subscribe((s, prev) => {
-      if (s.booted !== prev.booted) s.booted ? l.start() : l.stop()
+      if (s.booted !== prev.booted) {
+        if (s.booted) l.start()
+        else l.stop()
+      }
     })
 
     return () => {
       unlock()
+      cancelAnimationFrame(raf)
       l.destroy()
       journey.raw = 0
       if (lenis.current === l) lenis.current = null

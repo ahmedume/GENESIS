@@ -25,14 +25,6 @@ export function CameraRig() {
     }
     camera.position.copy(pos)
     camera.lookAt(aim)
-    // TEMP DEBUG (remove before commit)
-    ;(window as unknown as { __g?: object }).__g = {
-      raw: Number(journey.raw.toFixed(3)),
-      damp: Number(journey.damped.toFixed(3)),
-      x: Number(pos.x.toFixed(1)),
-      y: Number(pos.y.toFixed(1)),
-      z: Number(pos.z.toFixed(1)),
-    }
   })
 
   return null

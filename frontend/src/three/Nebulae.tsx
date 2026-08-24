@@ -1,6 +1,6 @@
 import { useMemo, useRef } from 'react'
 import { useFrame } from '@react-three/fiber'
-import { AdditiveBlending, DoubleSide, ShaderMaterial } from 'three'
+import { AdditiveBlending, Color, DoubleSide, ShaderMaterial } from 'three'
 
 const VERT = /* glsl */ `
   varying vec2 vUv;
@@ -51,8 +51,9 @@ export function Nebula({ position, size, colorA, colorB, seed = 1, opacity = 0.5
   const mat = useRef<ShaderMaterial>(null)
   const uniforms = useMemo(
     () => ({
-      uColorA: { value: colorA },
-      uColorB: { value: colorB },
+      // vec3 uniforms need real Color objects — raw hex strings throw in uniform3fv
+      uColorA: { value: new Color(colorA) },
+      uColorB: { value: new Color(colorB) },
       uTime: { value: seed * 10 },
       uSeed: { value: seed },
       uOpacity: { value: opacity },

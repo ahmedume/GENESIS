@@ -1,5 +1,6 @@
 import { useRef } from 'react'
 import { useFrame } from '@react-three/fiber'
+import { Preload } from '@react-three/drei'
 import { Group } from 'three'
 import { journey } from '../hooks/useDampedProgress'
 import { CameraRig } from './CameraRig'
@@ -16,48 +17,47 @@ import { GalaxyEra } from './epochs/GalaxyEra'
 import { StellarForge } from './epochs/StellarForge'
 import { EventHorizon } from './epochs/EventHorizon'
 import { SolSystem } from './epochs/SolSystem'
-import { lenis } from '../hooks/useScrollProgress'
 
 /** Single visibility gate for all epochs — one useFrame instead of 7 (SRS §8). */
 function EpochGate() {
   const gates = useRef<{ ref: Group; from: number; to: number }[]>([])
 
   useFrame(() => {
-    // Drive Lenis + update raw progress in the SAME rAF as R3F (single frame loop)
-    const l = lenis.current
-    l?.raf(performance.now())
-    journey.raw = Math.min(1, Math.max(0, l?.progress ?? 0))
-
     const p = journey.raw
     gates.current.forEach((g) => {
       if (g.ref) g.ref.visible = p >= g.from && p <= g.to
     })
   })
 
+  // Block-bodied ref callbacks — React 19 treats a returned value as a cleanup fn
+  const gate = (i: number, from: number, to: number) => (r: Group | null) => {
+    gates.current[i] = { ref: r as Group, from, to }
+  }
+
   return (
     <>
-      <group ref={(r) => gates.current[0] = { ref: r!, from: 0.04, to: 0.22 }}>
+      <group ref={gate(0, 0.04, 0.22)}>
         <Inflation />
       </group>
-      <group ref={(r) => gates.current[1] = { ref: r!, from: 0.12, to: 0.32 }}>
+      <group ref={gate(1, 0.12, 0.32)}>
         <QuarkSoup />
       </group>
-      <group ref={(r) => gates.current[2] = { ref: r!, from: 0.2, to: 0.42 }}>
+      <group ref={gate(2, 0.2, 0.42)}>
         <FirstLight />
       </group>
-      <group ref={(r) => gates.current[3] = { ref: r!, from: 0.3, to: 0.54 }}>
+      <group ref={gate(3, 0.3, 0.54)}>
         <CosmicDawn />
       </group>
-      <group ref={(r) => gates.current[4] = { ref: r!, from: 0.42, to: 0.68 }}>
+      <group ref={gate(4, 0.42, 0.68)}>
         <GalaxyEra />
       </group>
-      <group ref={(r) => gates.current[5] = { ref: r!, from: 0.58, to: 0.8 }}>
+      <group ref={gate(5, 0.58, 0.8)}>
         <StellarForge />
       </group>
-      <group ref={(r) => gates.current[6] = { ref: r!, from: 0.7, to: 0.9 }}>
+      <group ref={gate(6, 0.7, 0.9)}>
         <EventHorizon />
       </group>
-      <group ref={(r) => gates.current[7] = { ref: r!, from: 0.8, to: 1.01 }}>
+      <group ref={gate(7, 0.8, 1.01)}>
         <SolSystem />
       </group>
     </>
@@ -76,6 +76,9 @@ export function Scene() {
       <Singularity />
       <Ignition />
       <EpochGate />
+      {/* Compile every gated epoch's shaders/programs up front (behind the boot screen) —
+          otherwise each epoch stalls the frame the first time it scrolls into view */}
+      <Preload all />
       <Effects />
     </>
   )
