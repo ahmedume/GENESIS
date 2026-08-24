@@ -7,7 +7,7 @@
 .observatory-eyebrow, .observatory-time { color: var(--signal-cyan); font-family: var(--font-terminal); font-size: 14px; letter-spacing: .16em; }
 .observatory-stage { position: fixed; inset: 0; }
 .observatory-stage canvas { display: block; }
-.observatory-hint { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); color: rgb(244 238 255 / 50%); font-family: var(--font-terminal); font-size: 15px; letter-spacing: .1em; white-space: nowrap; pointer-events: none; }
+.observatory-hint { position: fixed; bottom: 78px; left: 50%; transform: translateX(-50%); color: rgb(244 238 255 / 50%); font-family: var(--font-terminal); font-size: 15px; letter-spacing: .1em; white-space: nowrap; pointer-events: none; }
 .observatory-info { position: fixed; right: 32px; bottom: 94px; z-index: 5; width: min(360px, 34vw); padding: 18px 20px; border: 1px solid rgb(111 168 201 / 32%); border-left: 2px solid var(--signal-cyan); background: rgb(10 14 24 / 76%); backdrop-filter: blur(14px); }
 .observatory-info h2 { margin-top: 6px; font-family: var(--font-display); font-size: clamp(18px, 2.2vw, 28px); letter-spacing: .08em; }
 .observatory-info > p:not(.observatory-time):not(.observatory-info__prompt) { margin-top: 10px; color: rgb(244 238 255 / 72%); font-size: 15px; line-height: 1.55; }
