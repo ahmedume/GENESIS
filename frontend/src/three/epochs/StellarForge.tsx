@@ -91,9 +91,9 @@ export function StellarForge() {
     }
     if (flash.current) flash.current.intensity = intensity * 2600
 
-    // tumble asteroids
+    // tumble asteroids — skip when Gated hides the group (saves 36 matrix composes/frame outside window)
     const m = rocks.current
-    if (m) {
+    if (m && m.visible) {
       for (let i = 0; i < ROCKS; i++) {
         const r = rockData[i]
         r.rot[0] += delta * r.speed
@@ -128,17 +128,17 @@ export function StellarForge() {
         <spriteMaterial map={map} blending={AdditiveBlending} depthWrite={false} toneMapped={false} fog={false} />
       </sprite>
       {/* gold nebula seeding behind the blast */}
-      {[0.69, 0.71, 0.73].map((u, i) => {
+      {[0.69, 0.73].map((u, i) => {
         const p = pointAt(u)
         return (
           <Nebula
             key={i}
-            position={[p.x + (i - 1) * 22, p.y + (i % 2 ? 14 : -12), p.z]}
-            size={95}
+            position={[p.x + (i - 0.5) * 30, p.y + (i === 0 ? 18 : -18), p.z]}
+            size={80}
             colorA="#ffd75e"
             colorB="#ff8a3d"
             seed={11 + i * 3}
-            opacity={0.42}
+            opacity={0.3}
           />
         )
       })}

@@ -51,7 +51,7 @@ const LEAD = 0.032
 
 function SpiralGalaxy({ spec }: { spec: GalaxySpec }) {
   const group = useRef<Group>(null)
-  const positions = useMemo(() => armPositions(2600, 2), [])
+  const positions = useMemo(() => armPositions(1300, 2), [])
   const stars = useMemo(() => glow('rgba(255,255,255,1)', 'rgba(255,255,255,0)'), [])
   const core = useMemo(() => glow('rgba(255,217,160,1)', 'rgba(255,190,120,0)'), [])
   const base = useMemo(() => {

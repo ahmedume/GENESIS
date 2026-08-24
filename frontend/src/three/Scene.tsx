@@ -1,4 +1,4 @@
-import { useRef, type ReactNode } from 'react'
+import { useRef } from 'react'
 import { useFrame } from '@react-three/fiber'
 import { Group } from 'three'
 import { journey } from '../hooks/useDampedProgress'
@@ -16,17 +16,52 @@ import { GalaxyEra } from './epochs/GalaxyEra'
 import { StellarForge } from './epochs/StellarForge'
 import { EventHorizon } from './epochs/EventHorizon'
 import { SolSystem } from './epochs/SolSystem'
+import { lenis } from '../hooks/useScrollProgress'
 
-/** Mount-window optimization (pulled forward from Phase 6): only epochs near the
- *  camera stay mounted-visible — cuts per-frame draw load ~5x so mid/low GPUs keep
- *  pace with the damping loop. Windows overlap transition bands generously; raw
- *  leads damped, so content is live before the camera arrives. */
-function Gated({ from, to, children }: { from: number; to: number; children: ReactNode }) {
-  const ref = useRef<Group>(null)
+/** Single visibility gate for all epochs — one useFrame instead of 7 (SRS §8). */
+function EpochGate() {
+  const gates = useRef<{ ref: Group; from: number; to: number }[]>([])
+
   useFrame(() => {
-    if (ref.current) ref.current.visible = journey.raw >= from && journey.raw <= to
+    // Drive Lenis + update raw progress in the SAME rAF as R3F (single frame loop)
+    const l = lenis.current
+    l?.raf(performance.now())
+    journey.raw = Math.min(1, Math.max(0, l?.progress ?? 0))
+
+    const p = journey.raw
+    gates.current.forEach((g) => {
+      if (g.ref) g.ref.visible = p >= g.from && p <= g.to
+    })
   })
-  return <group ref={ref}>{children}</group>
+
+  return (
+    <>
+      <group ref={(r) => gates.current[0] = { ref: r!, from: 0.04, to: 0.22 }}>
+        <Inflation />
+      </group>
+      <group ref={(r) => gates.current[1] = { ref: r!, from: 0.12, to: 0.32 }}>
+        <QuarkSoup />
+      </group>
+      <group ref={(r) => gates.current[2] = { ref: r!, from: 0.2, to: 0.42 }}>
+        <FirstLight />
+      </group>
+      <group ref={(r) => gates.current[3] = { ref: r!, from: 0.3, to: 0.54 }}>
+        <CosmicDawn />
+      </group>
+      <group ref={(r) => gates.current[4] = { ref: r!, from: 0.42, to: 0.68 }}>
+        <GalaxyEra />
+      </group>
+      <group ref={(r) => gates.current[5] = { ref: r!, from: 0.58, to: 0.8 }}>
+        <StellarForge />
+      </group>
+      <group ref={(r) => gates.current[6] = { ref: r!, from: 0.7, to: 0.9 }}>
+        <EventHorizon />
+      </group>
+      <group ref={(r) => gates.current[7] = { ref: r!, from: 0.8, to: 1.01 }}>
+        <SolSystem />
+      </group>
+    </>
+  )
 }
 
 /** Persistent canvas contents — mounts once, never unmounts ("global canvas" pattern). */
@@ -40,30 +75,7 @@ export function Scene() {
       <Starfield />
       <Singularity />
       <Ignition />
-      <Gated from={0.04} to={0.22}>
-        <Inflation />
-      </Gated>
-      <Gated from={0.12} to={0.32}>
-        <QuarkSoup />
-      </Gated>
-      <Gated from={0.2} to={0.42}>
-        <FirstLight />
-      </Gated>
-      <Gated from={0.3} to={0.54}>
-        <CosmicDawn />
-      </Gated>
-      <Gated from={0.42} to={0.68}>
-        <GalaxyEra />
-      </Gated>
-      <Gated from={0.58} to={0.8}>
-        <StellarForge />
-      </Gated>
-      <Gated from={0.7} to={0.9}>
-        <EventHorizon />
-      </Gated>
-      <Gated from={0.8} to={1.01}>
-        <SolSystem />
-      </Gated>
+      <EpochGate />
       <Effects />
     </>
   )

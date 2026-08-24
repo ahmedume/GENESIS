@@ -51,6 +51,7 @@ function Planet({ spec }: { spec: PlanetSpec }) {
   const pivot = useRef<Group>(null)
   const moonPivot = useRef<Group>(null)
   const map = useTex(spec.file)
+  const moonMap = useTex('2k_moon.jpg') // unconditional — Rules of Hooks
 
   useFrame(({ clock }, delta) => {
     if (moonPivot.current) moonPivot.current.rotation.y += delta * 0.9
@@ -87,7 +88,7 @@ function Planet({ spec }: { spec: PlanetSpec }) {
           <group ref={moonPivot}>
             <mesh position={[spec.radius * 2.6, 0.4, 0]}>
               <sphereGeometry args={[0.45, 24, 24]} />
-              <meshStandardMaterial map={useTex('2k_moon.jpg')} roughness={0.95} />
+              <meshStandardMaterial map={moonMap} roughness={0.95} />
             </mesh>
           </group>
         )}
@@ -129,8 +130,8 @@ export function SolSystem() {
         <sphereGeometry args={[7, 64, 64]} />
         <meshBasicMaterial map={sunMap ?? null} color={sunMap ? '#ffffff' : '#ffd75e'} toneMapped={false} />
       </mesh>
-      <sprite scale={[46, 46, 1]}>
-        <spriteMaterial map={glowMap} blending={AdditiveBlending} depthWrite={false} opacity={0.85} fog={false} />
+      <sprite scale={[32, 32, 1]}>
+        <spriteMaterial map={glowMap} blending={AdditiveBlending} depthWrite={false} opacity={0.7} />
       </sprite>
 
       {/* the system plane */}
