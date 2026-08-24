@@ -22,8 +22,8 @@
   .observatory-header h1 { font-size: 17px; }
   .observatory-eyebrow { font-size: 11px; }
   .observatory-reset { padding: 8px 10px; font-size: 14px; }
-  .observatory-info { right: 16px; bottom: 88px; left: 16px; width: auto; padding: 14px 16px; }
+  .observatory-info { right: 16px; bottom: 78px; left: 16px; width: auto; padding: 14px 16px; }
   .observatory-info > p:not(.observatory-time):not(.observatory-info__prompt) { font-size: 14px; }
   .observatory-nav { right: 16px; bottom: 16px; left: 16px; }
-  .observatory-hint { bottom: 72px; max-width: 92vw; font-size: 12px; text-align: center; white-space: normal; }
+  .observatory-hint { top: 72px; bottom: auto; max-width: 92vw; font-size: 12px; text-align: center; white-space: normal; }
 }

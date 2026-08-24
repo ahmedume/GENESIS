@@ -44,7 +44,7 @@ export function FinalePlaque() {
         Open Observatory
       </a>
       <p className="text-secondary absolute bottom-[4vh] font-terminal text-base">
-        GENESIS.EXE — built for the 3D Websites Hackathon · textures: NASA / Solar System Scope · HDRIs: Poly Haven
+        GENESIS — built for the 3D Websites Hackathon · textures: NASA / Solar System Scope · HDRIs: Poly Haven
       </p>
     </div>
   )

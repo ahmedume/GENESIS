@@ -52,7 +52,7 @@ export function BootScreen() {
         booted ? 'opacity-0' : 'opacity-100'
       }`}
     >
-      <h1 className="font-display text-2xl tracking-[0.3em]">GENESIS.EXE</h1>
+      <h1 className="font-display text-2xl tracking-[0.3em]">GENESIS</h1>
       <div className="font-terminal mt-6 text-xl leading-relaxed">
         {LINES.slice(0, shown).map((line) => (
           <p key={line}>{line}</p>

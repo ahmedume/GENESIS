@@ -42,9 +42,12 @@ function HeroOverlay() {
       }`}
     >
       <h1 className="ca-text max-w-[calc(100vw-2rem)] px-2 font-display text-center text-[clamp(34px,9vw,128px)] leading-[0.95] tracking-[0.06em] text-balance">
-        GENESIS.EXE
+        GENESIS
       </h1>
       <p className="text-secondary mt-5 text-[clamp(15px,1.6vw,20px)] tracking-wide">13.8 billion years. One scroll.</p>
+      <a className="btn-ghost mt-8 px-4 text-xs no-underline" href="/observatory">
+        Enter Observatory
+      </a>
       {!reduced && <div className="absolute bottom-[6vh] flex flex-col items-center gap-2">
         <svg width="18" height="12" viewBox="0 0 18 12" className="animate-cue" aria-hidden>
           <path d="M2 2l7 7 7-7" fill="none" stroke="var(--signal-cyan)" strokeWidth="2" />
@@ -83,7 +86,22 @@ function AutoScrollButton() {
   const autoScroll = useStore((s) => s.autoScroll)
   const setAutoScroll = useStore((s) => s.setAutoScroll)
   const reduced = useReducedMotion()
-  if (!booted || reduced) return null
+  const [progress, setProgress] = useState(0)
+  useEffect(() => {
+    let raf = 0
+    let last = -1
+    const check = () => {
+      const next = Math.round(journey.raw * 1000) / 1000
+      if (next !== last) {
+        last = next
+        setProgress(next)
+      }
+      raf = requestAnimationFrame(check)
+    }
+    raf = requestAnimationFrame(check)
+    return () => cancelAnimationFrame(raf)
+  }, [])
+  if (!booted || reduced || progress > 0.94) return null
 
   return (
     <button

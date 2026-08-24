@@ -169,13 +169,16 @@ function ShowcaseObject({ id }: { id: EpochId }) {
 
 function ObservatoryCanvas({ epoch, resetKey }: { epoch: EpochId; resetKey: number }) {
   const controls = useRef<OrbitControlsImpl>(null)
-  return <Canvas key={resetKey} shadows camera={{ position: [0, 4, 20], fov: 45, near: 0.1, far: 500 }} dpr={[1, 2]} gl={{ antialias: true, powerPreference: 'high-performance' }} onCreated={({ gl }) => { gl.toneMapping = ACESFilmicToneMapping; gl.toneMappingExposure = 1.08 }}>
+  const isSolarSystem = epoch === 'solsystem'
+  const cameraPosition: [number, number, number] = isSolarSystem ? [18, 7, 34] : [0, 4, 20]
+  const target: [number, number, number] = isSolarSystem ? [10, 0, 0] : [0, 0, 0]
+  return <Canvas key={resetKey} shadows camera={{ position: cameraPosition, fov: 45, near: 0.1, far: 500 }} dpr={[1, 2]} gl={{ antialias: true, powerPreference: 'high-performance' }} onCreated={({ gl }) => { gl.toneMapping = ACESFilmicToneMapping; gl.toneMappingExposure = 1.08 }}>
     <color attach="background" args={['#000005']} />
     <fog attach="fog" args={['#000005', 18, 120]} />
     <ambientLight intensity={0.16} />
     <directionalLight position={[8, 12, 10]} intensity={1.4} castShadow shadow-mapSize={[1024, 1024]} />
     <Suspense fallback={null}><ShowcaseObject id={epoch} /></Suspense>
-    <OrbitControls ref={controls} enableDamping dampingFactor={0.08} minDistance={2.2} maxDistance={80} enablePan={false} rotateSpeed={0.55} zoomSpeed={0.7} />
+    <OrbitControls ref={controls} target={target} enableDamping dampingFactor={0.08} minDistance={2.2} maxDistance={80} enablePan={false} rotateSpeed={0.55} zoomSpeed={0.7} />
     <EffectComposer multisampling={0}><Bloom intensity={1.15} luminanceThreshold={0.72} mipmapBlur radius={0.85} /><Vignette darkness={0.48} offset={0.2} /></EffectComposer>
   </Canvas>
 }
@@ -185,7 +188,7 @@ export default function Observatory() {
   const [resetKey, setResetKey] = useState(0)
   const epoch = EPOCHS.find((item) => item.id === selected) ?? EPOCHS[0]
   return <main className="observatory-page">
-    <header className="observatory-header"><a className="observatory-back" href="/">← TIMELINE</a><div><p className="observatory-eyebrow">GENESIS.EXE / ARCHIVE MODE</p><h1>THE OBSERVATORY</h1></div><button className="observatory-reset" onClick={() => setResetKey((key) => key + 1)}>RESET VIEW</button></header>
+    <header className="observatory-header"><a className="observatory-back" href="/">← TIMELINE</a><div><p className="observatory-eyebrow">GENESIS / ARCHIVE MODE</p><h1>THE OBSERVATORY</h1></div><button className="observatory-reset" onClick={() => setResetKey((key) => key + 1)}>RESET VIEW</button></header>
     <section className="observatory-stage" aria-label={`${epoch.label} 3D object viewer`}><ObservatoryCanvas epoch={selected} resetKey={resetKey} /><div className="observatory-hint">DRAG TO ORBIT · PINCH OR SCROLL TO ZOOM · TWO-FINGER PAN DISABLED</div></section>
     <aside className="observatory-info"><p className="observatory-time">{epoch.time}</p><h2>{epoch.title}</h2><p>{epoch.description}</p><p className="observatory-info__prompt">SELECT AN EPOCH TO REFRAME THE UNIVERSE.</p></aside>
     <nav className="observatory-nav" aria-label="Choose an epoch">{EPOCHS.map((item) => <button key={item.id} className={item.id === selected ? 'is-active' : ''} onClick={() => { setSelected(item.id); setResetKey((key) => key + 1) }} aria-current={item.id === selected ? 'page' : undefined}>{item.label}</button>)}</nav>
