@@ -1,13 +1,14 @@
 // Purpose: WebAudio graph owner; opt-in ambience ≤ −12dB (FR-08) · Phase 5
 import { useEffect, useRef, useState } from 'react'
 import { useStore } from '../state/store'
+import { withBase } from '../lib/format'
 
 /** Data sonification of the JWST "Cosmic Cliffs" in the Carina Nebula — telescope
  *  image data mapped to music by SYSTEM Sounds. Source: official NASA release.
  *  Credit: Image: NASA, ESA, CSA, STScI; Sonification: K.Arcand (CXC/SAO),
  *  M.Russo & A.Santaguida (SYSTEM Sounds), Q.Hart & C.Blome (STScI).
  *  https://science.nasa.gov/mission/webb/sonifications/ */
-const TRACK_SRC = '/audio/carina-nebula.mp3'
+const TRACK_SRC = withBase('audio/carina-nebula.mp3')
 const GAIN_ON = 0.24 // ≈ −12.4 dB ambience level
 const FADE_IN_S = 1.2
 const FADE_OUT_S = 0.6
