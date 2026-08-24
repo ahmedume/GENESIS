@@ -21,6 +21,7 @@ function useTex(file: string) {
   return useMemo(() => {
     const t = loader.load(`/assets/textures/${file}`)
     t.colorSpace = SRGBColorSpace
+    t.anisotropy = 4
     return t
   }, [file])
 }

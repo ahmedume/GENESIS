@@ -9,6 +9,7 @@ import {
   MeshBasicMaterial,
   Object3D,
   PointLight,
+  SRGBColorSpace,
 } from 'three'
 import type { Sprite, SpriteMaterial } from 'three'
 import { pointAt } from '../../lib/cameraPath'
@@ -36,7 +37,10 @@ function glowTexture(inner: string, outer: string) {
   g.addColorStop(1, outer)
   ctx.fillStyle = g
   ctx.fillRect(0, 0, 128, 128)
-  return new CanvasTexture(c)
+  const texture = new CanvasTexture(c)
+  texture.colorSpace = SRGBColorSpace
+  texture.generateMipmaps = false
+  return texture
 }
 
 /** EPOCH 6 — STELLAR FORGE [SIG]: scroll-scrubbed supernova + gold nebula seeding +

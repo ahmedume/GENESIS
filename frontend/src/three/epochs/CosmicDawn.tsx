@@ -1,6 +1,6 @@
 import { useMemo, useRef } from 'react'
 import { useFrame } from '@react-three/fiber'
-import { AdditiveBlending, CanvasTexture, Group, Mesh, MeshBasicMaterial } from 'three'
+import { AdditiveBlending, CanvasTexture, Group, Mesh, MeshBasicMaterial, SRGBColorSpace } from 'three'
 import { journey } from '../../hooks/useDampedProgress'
 import { pointAt } from '../../lib/cameraPath'
 
@@ -30,14 +30,17 @@ function disc() {
   g.addColorStop(1, 'rgba(190,225,255,0)')
   ctx.fillStyle = g
   ctx.fillRect(0, 0, 128, 128)
-  return new CanvasTexture(c)
+  const texture = new CanvasTexture(c)
+  texture.colorSpace = SRGBColorSpace
+  texture.generateMipmaps = false
+  return texture
 }
 
 /** EPOCH 4 — COSMIC DAWN [SIG]: sequential blue-giant ignitions driven by scroll progress.
  *  Each birth spikes fast (flare), settles to a persistent white-blue core.
  *  Pacing: thresholds spaced ≥0.011 ≈ ≥400ms of travel (ACCESSIBILITY §2). */
 export function CosmicDawn() {
-  const map = useMemo(disc, [])
+  const map = useMemo(() => disc(), [])
   const groups = useRef<(Group | null)[]>([])
 
   useFrame(() => {

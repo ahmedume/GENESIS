@@ -5,6 +5,7 @@ import { deviceTierCeiling, QualityGovernor, TIER_DPR } from './hooks/useQuality
 import { useStore } from './state/store'
 import { Scene } from './three/Scene'
 import { Hud } from './hud/Hud'
+import { useReducedMotion } from './hooks/useReducedMotion'
 
 const TIER_CEILING = deviceTierCeiling()
 
@@ -36,10 +37,18 @@ class CanvasErrorBoundary extends Component<{ children: ReactNode }, { failed: b
  *  permanently black canvas — recover by reloading once, guarded against loops. */
 function useContextLossGuard() {
   useEffect(() => {
+    const storage = {
+      get: (key: string) => {
+        try { return sessionStorage.getItem(key) } catch { return null }
+      },
+      set: (key: string, value: string) => {
+        try { sessionStorage.setItem(key, value) } catch { /* private mode */ }
+      },
+    }
     const onLost = (e: Event) => {
       e.preventDefault()
-      if (!sessionStorage.getItem('genesis-gl-reload')) {
-        sessionStorage.setItem('genesis-gl-reload', '1')
+      if (!storage.get('genesis-gl-reload')) {
+        storage.set('genesis-gl-reload', '1')
         location.reload()
       }
     }
@@ -52,8 +61,11 @@ function useContextLossGuard() {
 export default function App() {
   useScrollProgress()
   useContextLossGuard()
+  useReducedMotion()
   const tier = useStore((s) => s.qualityTier)
-  useEffect(() => () => sessionStorage.removeItem('genesis-gl-reload'), [])
+  useEffect(() => () => {
+    try { sessionStorage.removeItem('genesis-gl-reload') } catch { /* private mode */ }
+  }, [])
 
   return (
     <>

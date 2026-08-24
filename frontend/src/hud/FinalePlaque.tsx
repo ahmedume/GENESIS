@@ -38,7 +38,7 @@ export function FinalePlaque() {
         Every atom you're made of was forged in the fire you just scrolled through.
       </p>
       <button className="btn-ghost mt-12" onClick={rewindToSurface}>
-        ⟲ Rewind Time
+        Rewind Time
       </button>
       <p className="text-secondary absolute bottom-[4vh] font-terminal text-base">
         GENESIS.EXE — built for the 3D Websites Hackathon · textures: NASA / Solar System Scope · HDRIs: Poly Haven

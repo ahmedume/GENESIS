@@ -1,6 +1,7 @@
 import { useMemo, useRef } from 'react'
 import { useFrame } from '@react-three/fiber'
 import { AdditiveBlending, Color, DoubleSide, ShaderMaterial } from 'three'
+import { motionPreference } from '../hooks/useReducedMotion'
 
 const VERT = /* glsl */ `
   varying vec2 vUv;
@@ -64,7 +65,7 @@ export function Nebula({ position, size, colorA, colorB, seed = 1, opacity = 0.5
   )
 
   useFrame((_, delta) => {
-    if (mat.current) mat.current.uniforms.uTime.value += delta
+    if (mat.current && !motionPreference.reduced) mat.current.uniforms.uTime.value += delta
   })
 
   return (

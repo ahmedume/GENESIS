@@ -3,6 +3,11 @@ import { journey } from '../hooks/useDampedProgress'
 import { useStore } from '../state/store'
 import { BootScreen } from './BootScreen'
 import { FinalePlaque } from './FinalePlaque'
+import { EpochLabel } from './EpochLabel'
+import { CosmicClock } from './CosmicClock'
+import { EPOCHS } from '../data/epochs'
+import { lenis } from '../hooks/useScrollProgress'
+import { useReducedMotion } from '../hooks/useReducedMotion'
 
 const FADE_AT = 0.02 // matches IGNITE_AT — title yields as the universe begins
 
@@ -49,12 +54,38 @@ function HeroOverlay() {
   )
 }
 
+function ReducedMotionNav() {
+  const reduced = useReducedMotion()
+  const booted = useStore((s) => s.booted)
+  if (!reduced || !booted) return null
+
+  return (
+    <nav className="fixed bottom-5 left-1/2 z-40 flex max-w-[calc(100vw-2rem)] -translate-x-1/2 gap-1 overflow-x-auto border border-white/15 bg-black/80 p-1" aria-label="Jump to epoch">
+      {EPOCHS.map((epoch) => (
+        <button
+          key={epoch.id}
+          className="min-h-11 shrink-0 px-3 font-terminal text-base text-secondary transition-colors hover:text-white focus-visible:outline focus-visible:outline-1 focus-visible:outline-cyan-300"
+          onClick={() => {
+            const maxScroll = Math.max(0, document.documentElement.scrollHeight - window.innerHeight)
+            lenis.current?.scrollTo(epoch.scrollStart * maxScroll, { duration: 0 })
+          }}
+        >
+          {epoch.label}
+        </button>
+      ))}
+    </nav>
+  )
+}
+
 /** Fixed DOM layer above the canvas: boot gate + hero lockup + finale plaque. */
 export function Hud() {
   return (
     <>
       <BootScreen />
       <HeroOverlay />
+      <EpochLabel />
+      <CosmicClock />
+      <ReducedMotionNav />
       <FinalePlaque />
     </>
   )

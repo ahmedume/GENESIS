@@ -1,6 +1,6 @@
 import { useMemo, useRef } from 'react'
 import { useFrame } from '@react-three/fiber'
-import { AdditiveBlending, CanvasTexture, Group } from 'three'
+import { AdditiveBlending, CanvasTexture, Group, SRGBColorSpace } from 'three'
 import { pointAt } from '../../lib/cameraPath'
 
 function glow(inner: string, outer: string) {
@@ -12,19 +12,24 @@ function glow(inner: string, outer: string) {
   g.addColorStop(1, outer)
   ctx.fillStyle = g
   ctx.fillRect(0, 0, 128, 128)
-  return new CanvasTexture(c)
+  const texture = new CanvasTexture(c)
+  texture.colorSpace = SRGBColorSpace
+  texture.generateMipmaps = false
+  return texture
 }
 
 /** Log-spiral arm star field — denser core, looser arms, thin disc. */
 function armPositions(count: number, arms: number): Float32Array {
+  let seed = 9001
+  const random = () => (seed = (seed * 1664525 + 1013904223) % 4294967296) / 4294967296
   const arr = new Float32Array(count * 3)
   for (let i = 0; i < count; i++) {
-    const t = Math.pow(Math.random(), 0.65)
+    const t = Math.pow(random(), 0.65)
     const r = 1 + t * 15
-    const spread = (Math.random() - 0.5) * (0.5 + t * 2.4)
+    const spread = (random() - 0.5) * (0.5 + t * 2.4)
     const ang = ((i % arms) / arms) * Math.PI * 2 + t * 3.6 + spread
     arr[i * 3] = Math.cos(ang) * r
-    arr[i * 3 + 1] = (Math.random() - 0.5) * (1.7 - t * 1.1)
+    arr[i * 3 + 1] = (random() - 0.5) * (1.7 - t * 1.1)
     arr[i * 3 + 2] = Math.sin(ang) * r
   }
   return arr

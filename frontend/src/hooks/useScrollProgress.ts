@@ -17,7 +17,9 @@ export function rewindToSurface() {
  *  page scroll (and the DOM HUD) still advances at display refresh instead of rubber-banding. */
 export function useScrollProgress() {
   useEffect(() => {
-    const l = new Lenis({ autoRaf: false })
+    // wheelMultiplier <1 — each wheel tick advances less journey: a full 1600vh track at
+    // default 1.0 flew through epochs far too fast for the pacing to land
+    const l = new Lenis({ autoRaf: false, wheelMultiplier: 0.6 })
     lenis.current = l
     l.stop()
 

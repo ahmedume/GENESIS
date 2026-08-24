@@ -71,6 +71,10 @@ body::-webkit-scrollbar {
 .btn-ghost:active {
   transform: scale(0.97);
 }
+.btn-ghost:focus-visible {
+  outline: 2px solid var(--white-hot);
+  outline-offset: 4px;
+}
 
 /* film grain overlay (DESIGN-SYSTEM §5) — compositor-only layer:
    no mix-blend-mode (it forced a per-frame full-screen blend over the WebGL canvas),
@@ -112,4 +116,14 @@ body::-webkit-scrollbar {
 }
 .animate-cue {
   animation: cue-drop 1.6s ease-in-out infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.001ms !important;
+  }
 }

@@ -1,6 +1,6 @@
 import { useMemo, useRef } from 'react'
 import { useFrame } from '@react-three/fiber'
-import { AdditiveBlending, CanvasTexture, Group, Mesh } from 'three'
+import { AdditiveBlending, CanvasTexture, Group, Mesh, SRGBColorSpace } from 'three'
 import { useStore } from '../state/store'
 
 const POSITION: [number, number, number] = [0, 0, -18]
@@ -15,7 +15,10 @@ function glowTexture(inner: string, outer: string) {
   g.addColorStop(1, outer)
   ctx.fillStyle = g
   ctx.fillRect(0, 0, 128, 128)
-  return new CanvasTexture(c)
+  const texture = new CanvasTexture(c)
+  texture.colorSpace = SRGBColorSpace
+  texture.generateMipmaps = false
+  return texture
 }
 
 /**

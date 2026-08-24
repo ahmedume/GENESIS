@@ -1,6 +1,6 @@
 import { useMemo, useRef } from 'react'
 import { useFrame } from '@react-three/fiber'
-import { AdditiveBlending, CanvasTexture, Group } from 'three'
+import { AdditiveBlending, CanvasTexture, Group, SRGBColorSpace } from 'three'
 import { Nebula } from '../Nebulae'
 import { pointAt } from '../../lib/cameraPath'
 
@@ -15,24 +15,33 @@ function disc() {
   g.addColorStop(1, 'rgba(255,255,255,0)')
   ctx.fillStyle = g
   ctx.fillRect(0, 0, 64, 64)
-  return new CanvasTexture(c)
+  const texture = new CanvasTexture(c)
+  texture.colorSpace = SRGBColorSpace
+  texture.generateMipmaps = false
+  return texture
 }
 
 const PALETTE = ['#ff8a3d', '#ffd75e', '#ff4438', '#ff8a3d']
 
+function seeded(seed: number) {
+  let value = seed
+  return () => (value = (value * 1664525 + 1013904223) % 4294967296) / 4294967296
+}
+
 /** EPOCH 2 — THE QUARK SOUP: turbulent ember plasma swarm + heat-fog billboards (STORYBOARD E2). */
 export function QuarkSoup() {
   const cloud = useRef<Group>(null)
-  const map = useMemo(disc, [])
+  const map = useMemo(() => disc(), [])
 
   // anchored to the journey curve so the swarm sits exactly where the camera travels (SDS §6)
   const center = useMemo(() => pointAt(0.21), [])
   const positions = useMemo(() => {
+    const random = seeded(404)
     const arr = new Float32Array(COUNT * 3)
     for (let i = 0; i < arr.length; i += 3) {
-      arr[i] = center.x + (Math.random() - 0.5) * 90
-      arr[i + 1] = center.y + (Math.random() - 0.5) * 90
-      arr[i + 2] = center.z + 50 - Math.random() * 100
+      arr[i] = center.x + (random() - 0.5) * 90
+      arr[i + 1] = center.y + (random() - 0.5) * 90
+      arr[i + 2] = center.z + 50 - random() * 100
     }
     return arr
   }, [center])

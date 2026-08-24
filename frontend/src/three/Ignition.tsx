@@ -3,6 +3,7 @@ import { useFrame } from '@react-three/fiber'
 import { AdditiveBlending, DoubleSide, Mesh, MeshBasicMaterial } from 'three'
 import { journey } from '../hooks/useDampedProgress'
 import { useStore } from '../state/store'
+import { prefersReducedMotion } from '../hooks/useReducedMotion'
 
 const IGNITE_AT = 0.02 // SRS FR-03
 const FLASH_MS = 250
@@ -12,8 +13,6 @@ const SPIKE = 1.4 // exposure boost composed by EpochDirector
 
 /** Flash envelope channel — EpochDirector adds this to the graded exposure each frame. */
 export const ignitionFlash = { boost: 0 }
-
-const reducedMotion = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
 /**
  * IGNITION [SIG]: one-shot exposure flash + expanding shockwave ring at first scroll (FR-03).
@@ -29,7 +28,7 @@ export function Ignition() {
 
     if (journey.raw > IGNITE_AT) {
       s.setIgnited(true)
-      if (!reducedMotion()) startedAt.current = clock.elapsedTime // reduced: no envelope, no ring
+      if (!prefersReducedMotion()) startedAt.current = clock.elapsedTime // reduced: no envelope, no ring
     }
     if (startedAt.current == null || !ring.current) return
 

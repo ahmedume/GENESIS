@@ -1,6 +1,6 @@
 import { useMemo, useRef } from 'react'
 import { useFrame } from '@react-three/fiber'
-import { AdditiveBlending, CanvasTexture, DoubleSide, ShaderMaterial } from 'three'
+import { AdditiveBlending, CanvasTexture, DoubleSide, ShaderMaterial, SRGBColorSpace } from 'three'
 import { pointAt } from '../../lib/cameraPath'
 
 const BH_U = 0.79 // encounter parameter — subject anchored AHEAD of it (see LEAD)
@@ -61,7 +61,10 @@ function photonTexture() {
   g.addColorStop(1, 'rgba(255,200,120,0)')
   ctx.fillStyle = g
   ctx.fillRect(0, 0, 128, 128)
-  return new CanvasTexture(c)
+  const texture = new CanvasTexture(c)
+  texture.colorSpace = SRGBColorSpace
+  texture.generateMipmaps = false
+  return texture
 }
 
 /** EPOCH 7 — EVENT HORIZON: silhouette, doppler accretion disk, photon ring (STORYBOARD E7). */
@@ -73,7 +76,7 @@ export function EventHorizon() {
     return [p.x + OFFSET[0], p.y + OFFSET[1], p.z] as [number, number, number]
   }, [])
   const uniforms = useMemo(() => ({ uTime: { value: 0 } }), [])
-  const photonMap = useMemo(photonTexture, [])
+  const photonMap = useMemo(() => photonTexture(), [])
 
   useFrame((_, delta) => {
     if (diskMat.current) diskMat.current.uniforms.uTime.value += delta

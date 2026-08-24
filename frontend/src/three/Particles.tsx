@@ -1,6 +1,7 @@
 import { useMemo, useRef } from 'react'
 import { useFrame } from '@react-three/fiber'
-import { AdditiveBlending, CanvasTexture, PointsMaterial } from 'three'
+import { AdditiveBlending, CanvasTexture, PointsMaterial, SRGBColorSpace } from 'three'
+import { motionPreference } from '../hooks/useReducedMotion'
 
 /** Soft round sprite texture — kills the square-point cheapness. */
 function disc() {
@@ -13,7 +14,10 @@ function disc() {
   g.addColorStop(1, 'rgba(255,255,255,0)')
   ctx.fillStyle = g
   ctx.fillRect(0, 0, 64, 64)
-  return new CanvasTexture(c)
+  const texture = new CanvasTexture(c)
+  texture.colorSpace = SRGBColorSpace
+  texture.generateMipmaps = false
+  return texture
 }
 
 interface LayerSpec {
@@ -22,6 +26,11 @@ interface LayerSpec {
   color: string
   base: number
   speed: number
+}
+
+function seeded(seed: number) {
+  let value = seed
+  return () => (value = (value * 1664525 + 1013904223) % 4294967296) / 4294967296
 }
 
 const LAYERS: LayerSpec[] = [
@@ -35,18 +44,19 @@ const CORRIDOR_DEPTH = 575
 function StarLayer({ count, size, color, base, speed }: LayerSpec) {
   const mat = useRef<PointsMaterial>(null)
   const positions = useMemo(() => {
+    const random = seeded(count * 17)
     const arr = new Float32Array(count * 3)
     for (let i = 0; i < arr.length; i += 3) {
-      arr[i] = (Math.random() - 0.5) * 120
-      arr[i + 1] = (Math.random() - 0.5) * 120
-      arr[i + 2] = 15 - Math.random() * CORRIDOR_DEPTH
+      arr[i] = (random() - 0.5) * 120
+      arr[i + 1] = (random() - 0.5) * 120
+      arr[i + 2] = 15 - random() * CORRIDOR_DEPTH
     }
     return arr
   }, [count])
-  const map = useMemo(disc, [])
+  const map = useMemo(() => disc(), [])
 
   useFrame(({ clock }) => {
-    if (mat.current) mat.current.opacity = base + Math.sin(clock.elapsedTime * speed) * 0.07
+    if (mat.current) mat.current.opacity = base + (motionPreference.reduced ? 0 : Math.sin(clock.elapsedTime * speed) * 0.07)
   })
 
   return (
