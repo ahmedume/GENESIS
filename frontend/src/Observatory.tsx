@@ -1,6 +1,6 @@
-import { Suspense, useMemo, useRef } from 'react'
+import { useMemo, useRef } from 'react'
 import { Canvas, useFrame } from '@react-three/fiber'
-import { OrbitControls, useTexture } from '@react-three/drei'
+import { OrbitControls } from '@react-three/drei'
 import { Bloom, EffectComposer, Vignette } from '@react-three/postprocessing'
 import type { OrbitControls as OrbitControlsImpl } from 'three-stdlib'
 import {
@@ -8,11 +8,13 @@ import {
   ACESFilmicToneMapping,
   BackSide,
   CanvasTexture,
+  DoubleSide,
   Group,
   Mesh,
   Points,
   ShaderMaterial,
   SRGBColorSpace,
+  TextureLoader,
 } from 'three'
 import { useState } from 'react'
 import './styles/observatory.css'
@@ -50,6 +52,16 @@ function glowTexture(color: string, size = 128) {
 function seeded(seed: number) {
   let value = seed
   return () => (value = (value * 1664525 + 1013904223) % 4294967296) / 4294967296
+}
+
+const observatoryTextureLoader = new TextureLoader()
+function useObservatoryTexture(file: string) {
+  return useMemo(() => {
+    const texture = observatoryTextureLoader.load(`/assets/textures/${file}`)
+    texture.colorSpace = SRGBColorSpace
+    texture.anisotropy = 8
+    return texture
+  }, [file])
 }
 
 function ParticleCloud({ color, count = 900, spread = 24, mode = 'cloud' }: { color: string; count?: number; spread?: number; mode?: 'cloud' | 'spiral' | 'streak' }) {
@@ -107,18 +119,16 @@ function EventHorizonObject() {
 }
 
 function SolarSystemObject() {
-  const [mars, earth, jupiter, saturn, moon, sun, ring] = useTexture([
-    '/assets/textures/2k_mars.jpg',
-    '/assets/textures/2k_earth_daymap.jpg',
-    '/assets/textures/2k_jupiter.jpg',
-    '/assets/textures/2k_saturn.jpg',
-    '/assets/textures/2k_moon.jpg',
-    '/assets/textures/2k_sun.jpg',
-    '/assets/textures/2k_saturn_ring_alpha.png',
-  ])
+  const mars = useObservatoryTexture('2k_mars.jpg')
+  const earth = useObservatoryTexture('2k_earth_daymap.jpg')
+  const jupiter = useObservatoryTexture('2k_jupiter.jpg')
+  const saturn = useObservatoryTexture('2k_saturn.jpg')
+  const moon = useObservatoryTexture('2k_moon.jpg')
+  const sun = useObservatoryTexture('2k_sun.jpg')
+  const ring = useObservatoryTexture('2k_saturn_ring_alpha.png')
   const group = useRef<Group>(null)
   useFrame((_, delta) => { if (group.current) group.current.rotation.y += delta * 0.035 })
-  return <group ref={group}>
+  return <group ref={group} scale={0.5}>
     <pointLight intensity={150} distance={120} decay={1.8} color="#fff0c4" />
     <mesh>
       <sphereGeometry args={[2.2, 96, 96]} />
@@ -170,14 +180,14 @@ function ShowcaseObject({ id }: { id: EpochId }) {
 function ObservatoryCanvas({ epoch, resetKey }: { epoch: EpochId; resetKey: number }) {
   const controls = useRef<OrbitControlsImpl>(null)
   const isSolarSystem = epoch === 'solsystem'
-  const cameraPosition: [number, number, number] = isSolarSystem ? [18, 7, 34] : [0, 4, 20]
-  const target: [number, number, number] = isSolarSystem ? [10, 0, 0] : [0, 0, 0]
+  const cameraPosition: [number, number, number] = isSolarSystem ? [10, 4, 28] : [0, 4, 20]
+  const target: [number, number, number] = isSolarSystem ? [6, 0, 0] : [0, 0, 0]
   return <Canvas key={resetKey} shadows camera={{ position: cameraPosition, fov: 45, near: 0.1, far: 500 }} dpr={[1, 2]} gl={{ antialias: true, powerPreference: 'high-performance' }} onCreated={({ gl }) => { gl.toneMapping = ACESFilmicToneMapping; gl.toneMappingExposure = 1.08 }}>
     <color attach="background" args={['#000005']} />
     <fog attach="fog" args={['#000005', 18, 120]} />
     <ambientLight intensity={0.16} />
     <directionalLight position={[8, 12, 10]} intensity={1.4} castShadow shadow-mapSize={[1024, 1024]} />
-    <Suspense fallback={null}><ShowcaseObject id={epoch} /></Suspense>
+    <ShowcaseObject id={epoch} />
     <OrbitControls ref={controls} target={target} enableDamping dampingFactor={0.08} minDistance={2.2} maxDistance={80} enablePan={false} rotateSpeed={0.55} zoomSpeed={0.7} />
     <EffectComposer multisampling={0}><Bloom intensity={1.15} luminanceThreshold={0.72} mipmapBlur radius={0.85} /><Vignette darkness={0.48} offset={0.2} /></EffectComposer>
   </Canvas>
