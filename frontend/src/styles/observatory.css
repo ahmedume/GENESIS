@@ -1,0 +1,29 @@
+.observatory-page { min-height: 100svh; overflow: hidden; background: #000005; color: var(--text-primary); }
+.observatory-header { position: fixed; inset: 0 0 auto; z-index: 10; display: flex; align-items: flex-start; justify-content: space-between; padding: 26px 32px; pointer-events: none; }
+.observatory-header > * { pointer-events: auto; }
+.observatory-header h1 { margin-top: 5px; font-family: var(--font-display); font-size: clamp(18px, 2.6vw, 32px); letter-spacing: .12em; }
+.observatory-back, .observatory-reset { border: 1px solid rgb(0 240 255 / 42%); background: rgb(5 8 14 / 64%); color: var(--text-primary); padding: 10px 14px; font-family: var(--font-terminal); font-size: 16px; letter-spacing: .08em; text-decoration: none; cursor: pointer; }
+.observatory-back:hover, .observatory-reset:hover, .observatory-nav button:hover { border-color: var(--signal-cyan); color: var(--signal-cyan); }
+.observatory-eyebrow, .observatory-time { color: var(--signal-cyan); font-family: var(--font-terminal); font-size: 14px; letter-spacing: .16em; }
+.observatory-stage { position: fixed; inset: 0; }
+.observatory-stage canvas { display: block; }
+.observatory-hint { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); color: rgb(244 238 255 / 50%); font-family: var(--font-terminal); font-size: 15px; letter-spacing: .1em; white-space: nowrap; pointer-events: none; }
+.observatory-info { position: fixed; right: 32px; bottom: 94px; z-index: 5; width: min(360px, 34vw); padding: 18px 20px; border: 1px solid rgb(111 168 201 / 32%); border-left: 2px solid var(--signal-cyan); background: rgb(10 14 24 / 76%); backdrop-filter: blur(14px); }
+.observatory-info h2 { margin-top: 6px; font-family: var(--font-display); font-size: clamp(18px, 2.2vw, 28px); letter-spacing: .08em; }
+.observatory-info > p:not(.observatory-time):not(.observatory-info__prompt) { margin-top: 10px; color: rgb(244 238 255 / 72%); font-size: 15px; line-height: 1.55; }
+.observatory-info__prompt { margin-top: 14px; color: rgb(0 240 255 / 72%); font-family: var(--font-terminal); font-size: 14px; letter-spacing: .1em; }
+.observatory-nav { position: fixed; right: 32px; bottom: 24px; left: 32px; z-index: 10; display: flex; gap: 6px; overflow-x: auto; padding-bottom: 2px; scrollbar-width: none; }
+.observatory-nav::-webkit-scrollbar { display: none; }
+.observatory-nav button { min-height: 44px; flex: 0 0 auto; border: 1px solid rgb(255 255 255 / 16%); background: rgb(5 8 14 / 80%); color: rgb(244 238 255 / 68%); padding: 10px 12px; font-family: var(--font-terminal); font-size: 15px; letter-spacing: .04em; cursor: pointer; }
+.observatory-nav button.is-active { border-color: var(--signal-cyan); color: var(--signal-cyan); box-shadow: 0 0 18px rgb(0 240 255 / 14%); }
+.observatory-back:focus-visible, .observatory-reset:focus-visible, .observatory-nav button:focus-visible { outline: 2px solid var(--white-hot); outline-offset: 3px; }
+@media (max-width: 720px) {
+  .observatory-header { padding: 16px; }
+  .observatory-header h1 { font-size: 17px; }
+  .observatory-eyebrow { font-size: 11px; }
+  .observatory-reset { padding: 8px 10px; font-size: 14px; }
+  .observatory-info { right: 16px; bottom: 88px; left: 16px; width: auto; padding: 14px 16px; }
+  .observatory-info > p:not(.observatory-time):not(.observatory-info__prompt) { font-size: 14px; }
+  .observatory-nav { right: 16px; bottom: 16px; left: 16px; }
+  .observatory-hint { bottom: 72px; max-width: 92vw; font-size: 12px; text-align: center; white-space: normal; }
+}

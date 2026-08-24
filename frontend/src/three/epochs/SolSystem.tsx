@@ -1,6 +1,5 @@
-import { useLayoutEffect, useMemo, useRef, useState } from 'react'
+import { useLayoutEffect, useMemo, useRef } from 'react'
 import { useFrame } from '@react-three/fiber'
-import { Html } from '@react-three/drei'
 import {
   AdditiveBlending,
   BackSide,
@@ -80,31 +79,23 @@ interface PlanetSpec {
   atmosphere?: boolean
   atmosphereColor?: string
   moon?: boolean
-  title: string
-  description: string
 }
 
 // snap beats staggered per STORYBOARD E8 ("planets snap into orbit one-by-one, 150ms apart" ≈ scroll steps)
 const PLANETS: PlanetSpec[] = [
-  { fallback: '#8a8275', bandColor: '#c6b9a7', radius: 0.55, orbitR: 15, angle0: 4.6, snapAt: 0.846, roughness: 0.92, title: 'MERCURY', description: 'A scorched iron world, racing closest to the Sun.' },
-  { fallback: '#d9a36e', bandColor: '#f3d39a', radius: 1.0, orbitR: 22, angle0: 2.3, snapAt: 0.852, roughness: 0.88, title: 'VENUS', description: 'A cloud-wrapped furnace with a runaway atmosphere.' },
-  { file: '2k_mars.jpg', fallback: '#c1440e', radius: 1.3, orbitR: 30, angle0: 1.1, snapAt: 0.858, title: 'MARS', description: 'A rust-red archive of ancient rivers and vanished seas.' },
-  { file: '2k_earth_daymap.jpg', fallback: '#38bdf8', radius: 1.7, orbitR: 39, angle0: 3.6, snapAt: 0.87, atmosphere: true, atmosphereColor: '#58b9ff', moon: true, title: 'EARTH', description: 'A blue world of oceans, weather, and one known living biosphere.' },
-  { file: '2k_jupiter.jpg', fallback: '#c9a06a', radius: 4.4, orbitR: 52, angle0: 5.2, snapAt: 0.882, title: 'JUPITER', description: 'A storm giant whose gravity shepherds the whole system.' },
-  { file: '2k_saturn.jpg', fallback: '#d8b877', radius: 3.6, orbitR: 66, angle0: 0.6, snapAt: 0.894, ring: true, title: 'SATURN', description: 'Ice, dust, and shadow arranged into the Solar System’s signature rings.' },
-  { fallback: '#77b9c6', bandColor: '#c9f6ff', radius: 2.2, orbitR: 81, angle0: 4.0, snapAt: 0.906, atmosphere: true, atmosphereColor: '#8ee9ff', title: 'URANUS', description: 'A tilted blue world, rolling through the outer dark on its side.' },
-  { fallback: '#4568c7', bandColor: '#728fea', radius: 2.1, orbitR: 95, angle0: 1.8, snapAt: 0.918, atmosphere: true, atmosphereColor: '#6e89ff', title: 'NEPTUNE', description: 'The far blue sentinel, where winds outrun any storm on Earth.' },
+  { fallback: '#8a8275', bandColor: '#c6b9a7', radius: 0.55, orbitR: 15, angle0: 4.6, snapAt: 0.846, roughness: 0.92 },
+  { fallback: '#d9a36e', bandColor: '#f3d39a', radius: 1.0, orbitR: 22, angle0: 2.3, snapAt: 0.852, roughness: 0.88 },
+  { file: '2k_mars.jpg', fallback: '#c1440e', radius: 1.3, orbitR: 30, angle0: 1.1, snapAt: 0.858 },
+  { file: '2k_earth_daymap.jpg', fallback: '#38bdf8', radius: 1.7, orbitR: 39, angle0: 3.6, snapAt: 0.87, atmosphere: true, atmosphereColor: '#58b9ff', moon: true },
+  { file: '2k_jupiter.jpg', fallback: '#c9a06a', radius: 4.4, orbitR: 52, angle0: 5.2, snapAt: 0.882 },
+  { file: '2k_saturn.jpg', fallback: '#d8b877', radius: 3.6, orbitR: 66, angle0: 0.6, snapAt: 0.894, ring: true },
+  { fallback: '#77b9c6', bandColor: '#c9f6ff', radius: 2.2, orbitR: 81, angle0: 4.0, snapAt: 0.906, atmosphere: true, atmosphereColor: '#8ee9ff' },
+  { fallback: '#4568c7', bandColor: '#728fea', radius: 2.1, orbitR: 95, angle0: 1.8, snapAt: 0.918, atmosphere: true, atmosphereColor: '#6e89ff' },
 ]
 
 function Planet({ spec }: { spec: PlanetSpec }) {
   const pivot = useRef<Group>(null)
   const moonPivot = useRef<Group>(null)
-  const labelShown = useRef(false)
-  const inspecting = useRef(false)
-  const dragging = useRef(false)
-  const lastPointer = useRef({ x: 0, y: 0 })
-  const [showLabel, setShowLabel] = useState(false)
-  const [selected, setSelected] = useState(false)
   const map = useTex(spec.file)
   const fallbackMap = useMemo(
     () => spec.file ? null : proceduralPlanetTexture(spec.fallback, spec.bandColor ?? spec.fallback),
@@ -116,55 +107,18 @@ function Planet({ spec }: { spec: PlanetSpec }) {
   useFrame(({ clock }, delta) => {
     if (moonPivot.current) moonPivot.current.rotation.y += delta * 0.9
     if (pivot.current) {
-      if (!inspecting.current) pivot.current.rotation.y = clock.elapsedTime * 0.15
+      pivot.current.rotation.y = clock.elapsedTime * 0.15
       // scroll-scrubbed snap-in with gravitational settle overshoot
       const k = clamp01((journey.damped - spec.snapAt) / 0.012)
       const settle = k === 0 ? 0 : k < 1 ? 1 + Math.sin(k * Math.PI) * 0.35 : 1
       pivot.current.scale.setScalar(settle)
       pivot.current.visible = k > 0
-      const nextLabelShown = k > 0
-      if (nextLabelShown !== labelShown.current) {
-        labelShown.current = nextLabelShown
-        setShowLabel(nextLabelShown)
-      }
     }
   })
 
   return (
     <group position={[Math.cos(spec.angle0) * spec.orbitR, 0, Math.sin(spec.angle0) * spec.orbitR]}>
-      <group
-        ref={pivot}
-        onPointerDown={(event) => {
-          event.stopPropagation()
-          inspecting.current = true
-          dragging.current = true
-          lastPointer.current = { x: event.clientX, y: event.clientY }
-          setSelected(true)
-          document.body.classList.add('is-inspecting-object')
-        }}
-        onPointerMove={(event) => {
-          if (!dragging.current || !pivot.current) return
-          event.stopPropagation()
-          const dx = event.clientX - lastPointer.current.x
-          const dy = event.clientY - lastPointer.current.y
-          lastPointer.current = { x: event.clientX, y: event.clientY }
-          pivot.current.rotation.y += dx * 0.012
-          pivot.current.rotation.x = Math.max(-0.8, Math.min(0.8, pivot.current.rotation.x + dy * 0.008))
-        }}
-        onPointerUp={(event) => {
-          event.stopPropagation()
-          dragging.current = false
-          document.body.classList.remove('is-inspecting-object')
-        }}
-        onPointerLeave={() => {
-          dragging.current = false
-          document.body.classList.remove('is-inspecting-object')
-        }}
-        onPointerCancel={() => {
-          dragging.current = false
-          document.body.classList.remove('is-inspecting-object')
-        }}
-      >
+      <group ref={pivot}>
         <mesh>
           <sphereGeometry args={[spec.radius, 48, 48]} />
           <meshStandardMaterial map={surfaceMap} color={surfaceMap ? '#ffffff' : spec.fallback} roughness={spec.roughness ?? 0.85} metalness={0} />
@@ -196,23 +150,6 @@ function Planet({ spec }: { spec: PlanetSpec }) {
               <meshStandardMaterial map={moonMap} roughness={0.95} color={moonMap ? '#ffffff' : '#8f8f8f'} />
             </mesh>
           </group>
-        )}
-        {showLabel && (
-          <Html
-            position={[spec.radius + 1.6, spec.radius * 0.55, 0]}
-            distanceFactor={10}
-            zIndexRange={[5, 20]}
-            style={{ pointerEvents: 'none' }}
-          >
-            <div className={`scene-object-label${selected ? ' scene-object-label--selected' : ''}`}>
-              <span className="scene-object-label__line" aria-hidden="true" />
-              <div>
-                <p className="scene-object-label__title">{spec.title}</p>
-                <p className="scene-object-label__description">{spec.description}</p>
-                <p className="scene-object-label__hint">{selected ? 'DRAG TO ROTATE · TAP TO HOLD' : 'TAP TO INSPECT · DRAG TO ROTATE'}</p>
-              </div>
-            </div>
-          </Html>
         )}
       </group>
     </group>

@@ -40,6 +40,9 @@ export function FinalePlaque() {
       <button className="btn-ghost mt-12" onClick={rewindToSurface}>
         Rewind Time
       </button>
+      <a className="btn-ghost fixed bottom-16 right-5 z-40 px-4 text-xs no-underline sm:right-8" href="/observatory">
+        Open Observatory
+      </a>
       <p className="text-secondary absolute bottom-[4vh] font-terminal text-base">
         GENESIS.EXE — built for the 3D Websites Hackathon · textures: NASA / Solar System Scope · HDRIs: Poly Haven
       </p>
