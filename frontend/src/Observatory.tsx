@@ -18,6 +18,7 @@ import {
 } from 'three'
 import { useState } from 'react'
 import './styles/observatory.css'
+import { withBase } from './lib/format'
 
 type EpochId = 'singularity' | 'inflation' | 'quarksoup' | 'firstlight' | 'cosmicdawn' | 'galaxyera' | 'stellarforge' | 'eventhorizon' | 'solsystem'
 
@@ -57,7 +58,7 @@ function seeded(seed: number) {
 const observatoryTextureLoader = new TextureLoader()
 function useObservatoryTexture(file: string) {
   return useMemo(() => {
-    const texture = observatoryTextureLoader.load(`/assets/textures/${file}`)
+    const texture = observatoryTextureLoader.load(withBase(`assets/textures/${file}`))
     texture.colorSpace = SRGBColorSpace
     texture.anisotropy = 8
     return texture
@@ -198,7 +199,7 @@ export default function Observatory() {
   const [resetKey, setResetKey] = useState(0)
   const epoch = EPOCHS.find((item) => item.id === selected) ?? EPOCHS[0]
   return <main className="observatory-page">
-    <header className="observatory-header"><a className="observatory-back" href="/">← TIMELINE</a><div><p className="observatory-eyebrow">A Closer View</p><h1>THE OBSERVATORY</h1></div><button className="observatory-reset" onClick={() => setResetKey((key) => key + 1)}>RESET VIEW</button></header>
+    <header className="observatory-header"><a className="observatory-back" href={withBase('')}>← TIMELINE</a><div><p className="observatory-eyebrow">A Closer View</p><h1>THE OBSERVATORY</h1></div><button className="observatory-reset" onClick={() => setResetKey((key) => key + 1)}>RESET VIEW</button></header>
     <section className="observatory-stage" aria-label={`${epoch.label} 3D object viewer`}><ObservatoryCanvas epoch={selected} resetKey={resetKey} /><div className="observatory-hint">DRAG TO ORBIT AND PINCH OR SCROLL TO ZOOM</div></section>
     <aside className="observatory-info"><p className="observatory-time">{epoch.time}</p><h2>{epoch.title}</h2><p>{epoch.description}</p><p className="observatory-info__prompt">SELECT AN EPOCH TO REFRAME THE UNIVERSE.</p></aside>
     <nav className="observatory-nav" aria-label="Choose an epoch">{EPOCHS.map((item) => <button key={item.id} className={item.id === selected ? 'is-active' : ''} onClick={() => { setSelected(item.id); setResetKey((key) => key + 1) }} aria-current={item.id === selected ? 'page' : undefined}>{item.label}</button>)}</nav>

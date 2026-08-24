@@ -13,6 +13,7 @@ import {
 } from 'three'
 import { pointAt } from '../../lib/cameraPath'
 import { journey } from '../../hooks/useDampedProgress'
+import { withBase } from '../../lib/format'
 import { useStore } from '../../state/store'
 
 const SUN_U = 0.895 // anchored inside the finale window — the system assembles AHEAD of
@@ -54,7 +55,7 @@ function proceduralPlanetTexture(base: string, accent: string) {
 function useTex(file?: string) {
   return useMemo(() => {
     if (!file) return null
-    const t = loader.load(`/assets/textures/${file}`)
+    const t = loader.load(withBase(`assets/textures/${file}`))
     t.colorSpace = SRGBColorSpace
     // Planet maps are viewed at grazing angles during the crane reveal; keep the
     // texture crisp without increasing geometry or post-processing cost.

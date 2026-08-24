@@ -9,6 +9,7 @@ import { AudioToggle } from './AudioToggle'
 import { EPOCHS } from '../data/epochs'
 import { lenis } from '../hooks/useScrollProgress'
 import { useReducedMotion } from '../hooks/useReducedMotion'
+import { withBase } from '../lib/format'
 
 const FADE_AT = 0.02 // matches IGNITE_AT — title yields as the universe begins
 
@@ -46,7 +47,7 @@ function HeroOverlay() {
         GENESIS
       </h1>
       <p className="text-secondary mt-5 text-[clamp(15px,1.6vw,20px)] tracking-wide">13.8 billion years. One scroll.</p>
-      <a className="btn-ghost mt-8 px-4 text-xs no-underline" href="/observatory">
+      <a className="btn-ghost mt-8 px-4 text-xs no-underline" href={withBase('observatory')}>
         Enter Observatory
       </a>
       {!reduced && <div className="absolute bottom-[6vh] flex flex-col items-center gap-2">

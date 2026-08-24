@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { journey } from '../hooks/useDampedProgress'
 import { rewindToSurface } from '../hooks/useScrollProgress'
+import { withBase } from '../lib/format'
 
 const SHOW_AT = 0.945
 const HIDE_BELOW = 0.92 // hysteresis so the plaque doesn't flicker at the boundary
@@ -40,7 +41,7 @@ export function FinalePlaque() {
       <button className="btn-ghost mt-12" onClick={rewindToSurface}>
         Rewind Time
       </button>
-      <a className="btn-ghost fixed bottom-16 right-5 z-40 px-4 text-xs no-underline sm:right-8" href="/observatory">
+      <a className="btn-ghost fixed bottom-16 right-5 z-40 px-4 text-xs no-underline sm:right-8" href={withBase('observatory')}>
         Open Observatory
       </a>
       <p className="text-secondary absolute bottom-[4vh] font-terminal text-base">
