@@ -11,9 +11,9 @@
   --signal-cyan: #00f0ff;
   --text-primary: #f4eeff;
   --text-secondary: rgb(244 238 255 / 64%);
-  --font-display: "Audiowide", "Space Grotesk", system-ui, sans-serif;
-  --font-body: "Space Grotesk", system-ui, sans-serif;
-  --font-terminal: "VT323", ui-monospace, monospace;
+  --font-display: "Syncopate", "Jura", system-ui, sans-serif;
+  --font-body: "Jura", system-ui, sans-serif;
+  --font-terminal: "Space Mono", ui-monospace, monospace;
 }
 
 html {
