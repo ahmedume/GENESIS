@@ -160,8 +160,6 @@ Design rules enforced in code:
 
 ## Performance & Quality Tiers
 
-Hard budgets from [`PERFORMANCE-BUDGET.md`](spec%20driven%20development/PERFORMANCE-BUDGET.md):
-
 | Metric | Budget |
 |--------|--------|
 | Initial JS (gzipped) | ≤ 550 KB |
@@ -246,8 +244,6 @@ Package manager: **pnpm** (via Corepack). Lockfile: `frontend/pnpm-lock.yaml`.
 
 ## Assets & Licenses
 
-Full sourcing ledger: [`spec driven development/ASSETS.md`](spec%20driven%20development/ASSETS.md).
-
 - Planet & ring textures © [Solar System Scope](https://www.solarsystemscope.com/textures/) (CC-BY 4.0)
 - Earth day map imagery courtesy NASA Blue Marble
 - HDRI environments from [Poly Haven](https://polyhaven.com/) (CC0)
@@ -262,14 +258,6 @@ personal emails — in the working tree *or* git history (enforced by scans defi
 [`QA-SECURITY.md`](spec%20driven%20development/QA-SECURITY.md)). `.env.example` is a
 placeholder documenting this policy. The site makes no external API calls; the only
 third-party requests are Google Fonts stylesheet/font files.
-
-## Spec Package
-
-The project was built spec-first ("spec driven development"). The complete package —
-PRD, SRS, SDS, storyboard, design system, performance budgets, accessibility, QA/security,
-risks, submission checklist — lives in
-[`spec driven development/`](spec%20driven%20development/README.md).
-Recommended entry points: **SPEC.md** (what we're building) and **BUILD_PLAN.md** (how).
 
 ---
 
