@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { journey } from '../hooks/useDampedProgress'
 import { useStore } from '../state/store'
 import { BootScreen } from './BootScreen'
+import { FinalePlaque } from './FinalePlaque'
 
 const FADE_AT = 0.02 // matches IGNITE_AT — title yields as the universe begins
 
@@ -43,12 +44,13 @@ function HeroOverlay() {
   )
 }
 
-/** Fixed DOM layer above the canvas: boot gate + hero lockup (more instruments land in Phase 5). */
+/** Fixed DOM layer above the canvas: boot gate + hero lockup + finale plaque. */
 export function Hud() {
   return (
     <>
       <BootScreen />
       <HeroOverlay />
+      <FinalePlaque />
     </>
   )
 }

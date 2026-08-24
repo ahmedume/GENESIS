@@ -12,7 +12,8 @@ import {
 import { pointAt } from '../../lib/cameraPath'
 import { journey } from '../../hooks/useDampedProgress'
 
-const SUN_U = 0.88
+const SUN_U = 0.895 // anchored inside the finale window — the system assembles AHEAD of
+// the camera during 0.84–0.95, then the crane reveal looks down on it at >0.97
 const loader = new TextureLoader()
 
 /** Real NASA / Solar System Scope maps (CC-BY/PD) — see ASSETS.md §1. */
@@ -40,10 +41,10 @@ interface PlanetSpec {
 
 // snap beats staggered per STORYBOARD E8 ("planets snap into orbit one-by-one, 150ms apart" ≈ scroll steps)
 const PLANETS: PlanetSpec[] = [
-  { file: '2k_mars.jpg', fallback: '#c1440e', radius: 1.3, orbitR: 30, angle0: 1.1, snapAt: 0.888 },
-  { file: '2k_earth_daymap.jpg', fallback: '#38bdf8', radius: 1.7, orbitR: 39, angle0: 3.6, snapAt: 0.904, atmosphere: true, moon: true },
-  { file: '2k_jupiter.jpg', fallback: '#c9a06a', radius: 4.4, orbitR: 52, angle0: 5.2, snapAt: 0.922 },
-  { file: '2k_saturn.jpg', fallback: '#d8b877', radius: 3.6, orbitR: 66, angle0: 0.6, snapAt: 0.94, ring: true },
+  { file: '2k_mars.jpg', fallback: '#c1440e', radius: 1.3, orbitR: 30, angle0: 1.1, snapAt: 0.858 },
+  { file: '2k_earth_daymap.jpg', fallback: '#38bdf8', radius: 1.7, orbitR: 39, angle0: 3.6, snapAt: 0.87, atmosphere: true, moon: true },
+  { file: '2k_jupiter.jpg', fallback: '#c9a06a', radius: 4.4, orbitR: 52, angle0: 5.2, snapAt: 0.882 },
+  { file: '2k_saturn.jpg', fallback: '#d8b877', radius: 3.6, orbitR: 66, angle0: 0.6, snapAt: 0.894, ring: true },
 ]
 
 function Planet({ spec }: { spec: PlanetSpec }) {
@@ -129,7 +130,7 @@ export function SolSystem() {
         <meshBasicMaterial map={sunMap ?? null} color={sunMap ? '#ffffff' : '#ffd75e'} toneMapped={false} />
       </mesh>
       <sprite scale={[46, 46, 1]}>
-        <spriteMaterial map={glowMap} blending={AdditiveBlending} depthWrite={false} opacity={0.85} />
+        <spriteMaterial map={glowMap} blending={AdditiveBlending} depthWrite={false} opacity={0.85} fog={false} />
       </sprite>
 
       {/* the system plane */}

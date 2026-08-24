@@ -39,11 +39,15 @@ interface GalaxySpec {
 }
 
 const GALAXIES: GalaxySpec[] = [
-  { u: 0.495, offset: [-22, 10], scale: 1.15, tilt: [0.9, 0.2, 0.4], speed: 0.05 },
-  { u: 0.53, offset: [24, -12], scale: 0.85, tilt: [0.5, 1.1, 0], speed: 0.04 },
-  { u: 0.565, offset: [-18, -16], scale: 1.35, tilt: [1.3, 0.5, 0.7], speed: 0.03 },
-  { u: 0.6, offset: [20, 14], scale: 0.95, tilt: [0.3, 0.8, 0.2], speed: 0.06 },
+  { u: 0.495, offset: [-15, 7], scale: 1.15, tilt: [0.9, 0.2, 0.4], speed: 0.05 },
+  { u: 0.53, offset: [16, -9], scale: 0.85, tilt: [0.5, 1.1, 0], speed: 0.04 },
+  { u: 0.565, offset: [-13, -11], scale: 1.35, tilt: [1.3, 0.5, 0.7], speed: 0.03 },
+  { u: 0.6, offset: [14, 10], scale: 0.95, tilt: [0.3, 0.8, 0.2], speed: 0.06 },
 ]
+
+// lead: anchor AHEAD of the camera's arrival parameter so each galaxy grows into frame
+// during its viewing window instead of sitting beside/behind it (flyby cinematography)
+const LEAD = 0.032
 
 function SpiralGalaxy({ spec }: { spec: GalaxySpec }) {
   const group = useRef<Group>(null)
@@ -51,7 +55,7 @@ function SpiralGalaxy({ spec }: { spec: GalaxySpec }) {
   const stars = useMemo(() => glow('rgba(255,255,255,1)', 'rgba(255,255,255,0)'), [])
   const core = useMemo(() => glow('rgba(255,217,160,1)', 'rgba(255,190,120,0)'), [])
   const base = useMemo(() => {
-    const p = pointAt(spec.u)
+    const p = pointAt(spec.u + LEAD)
     return [p.x + spec.offset[0], p.y + spec.offset[1], p.z] as [number, number, number]
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])

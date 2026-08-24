@@ -3,7 +3,12 @@ import { useFrame } from '@react-three/fiber'
 import { AdditiveBlending, CanvasTexture, DoubleSide, ShaderMaterial } from 'three'
 import { pointAt } from '../../lib/cameraPath'
 
-const BH_U = 0.79 // curve anchor for the encounter
+const BH_U = 0.79 // encounter parameter — subject anchored AHEAD of it (see LEAD)
+
+// flyby cinematography: place the black hole ahead of the camera's arrival point so the
+// silhouette/disk/photon-ring loom dead-ahead during approach instead of beside the frame
+const LEAD = 0.035
+const OFFSET: [number, number] = [10, -6]
 
 const VERT = /* glsl */ `
   varying vec2 vP;
@@ -63,8 +68,10 @@ function photonTexture() {
 export function EventHorizon() {
   const diskMat = useRef<ShaderMaterial>(null)
 
-  const anchor = useMemo(() => pointAt(BH_U), [])
-  const position: [number, number, number] = [anchor.x + 16, anchor.y - 8, anchor.z]
+  const anchor = useMemo(() => {
+    const p = pointAt(BH_U + LEAD)
+    return [p.x + OFFSET[0], p.y + OFFSET[1], p.z] as [number, number, number]
+  }, [])
   const uniforms = useMemo(() => ({ uTime: { value: 0 } }), [])
   const photonMap = useMemo(photonTexture, [])
 
@@ -73,7 +80,7 @@ export function EventHorizon() {
   })
 
   return (
-    <group position={position}>
+    <group position={anchor}>
       {/* silhouette — swallows the starfield behind it */}
       <mesh>
         <sphereGeometry args={[5, 48, 48]} />
@@ -95,7 +102,7 @@ export function EventHorizon() {
       </mesh>
       {/* photon ring — sprites face the camera natively */}
       <sprite scale={[11.4, 11.4, 1]}>
-        <spriteMaterial map={photonMap} blending={AdditiveBlending} depthWrite={false} opacity={0.95} />
+        <spriteMaterial map={photonMap} blending={AdditiveBlending} depthWrite={false} opacity={0.95} fog={false} />
       </sprite>
     </group>
   )

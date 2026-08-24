@@ -64,17 +64,17 @@ export function CosmicDawn() {
 
   return (
     <group>
-      {STARS.map((s, i) => (
+      {STARS.map((_, i) => (
         <group key={i} ref={(el) => void (groups.current[i] = el)} position={anchors[i]}>
           <mesh>
             <sphereGeometry args={[0.35, 16, 16]} />
             <meshBasicMaterial color="#eaf6ff" transparent toneMapped={false} />
           </mesh>
           <sprite scale={[1, 1, 1]}>
-            <spriteMaterial map={map} blending={AdditiveBlending} depthWrite={false} opacity={0.9} />
+            <spriteMaterial map={map} blending={AdditiveBlending} depthWrite={false} opacity={0.9} fog={false} />
           </sprite>
           <sprite scale={[2.6, 0.12, 1]}>
-            <spriteMaterial map={map} blending={AdditiveBlending} depthWrite={false} opacity={0.5} />
+            <spriteMaterial map={map} blending={AdditiveBlending} depthWrite={false} opacity={0.5} fog={false} />
           </sprite>
         </group>
       ))}
