@@ -3,6 +3,9 @@ node_modules/
 dist/
 dist-ssr/
 
+# vite transient files (config-error dumps)
+vite.config.*.timestamp-*
+
 # env & secrets — NEVER commit real values
 .env
 .env.*
@@ -16,3 +19,7 @@ Desktop.ini
 
 # editor
 .idea/
+.vscode/
+
+# AI tooling artifacts — deliberately removed from repo, keep them out
+.codex/

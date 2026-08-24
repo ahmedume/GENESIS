@@ -111,25 +111,23 @@ All commands run from `frontend/`:
 ## Production Build & Deployment
 
 The output of `pnpm build` is a fully static bundle — any static host works.
-The full host-comparison runbook (Vercel / Netlify / GitHub Pages / Docker) lives in
-[`spec driven development/DEPLOYMENT.md`](spec%20driven%20development/DEPLOYMENT.md).
 
 ### GitHub Pages (current target)
 
 A ready-made deployment workflow lives at
 [`.github/workflows/deploy-pages.yml`](.github/workflows/deploy-pages.yml). It runs on every
-push to `main` and on demand (`workflow_dispatch`): installs pnpm 10 + Node 22, builds
+push (`main` / `master`) and on demand (`workflow_dispatch`): installs pnpm 10 + Node 22, builds
 `frontend/` with `--base=/<repo-name>/`, copies `index.html` to `404.html` so
 `/<repo>/observatory` is directly linkable, and deploys via the official Pages Actions.
 
 One-time setup after pushing to GitHub:
 
 1. Repo **Settings → Pages → Source: GitHub Actions**.
-2. Push to `main` (or run the workflow manually) — site goes live at
+2. Push (or run the workflow manually) — site goes live at
    `https://<user>.github.io/<repo-name>/`.
 
-Note on headers: Pages cannot set custom HTTP headers, so security headers must be
-handled via `<meta>` tags or accepted as-is (see DEPLOYMENT.md §3–§4).
+Note on headers: Pages cannot set custom HTTP response headers, so security headers
+would have to be handled via `<meta>` tags or accepted as-is.
 
 ## Architecture
 
@@ -188,8 +186,6 @@ Boot starts conservatively at MEDIUM; the governor upgrades capable machines aft
 
 ## Accessibility
 
-Per [`ACCESSIBILITY.md`](spec%20driven%20development/ACCESSIBILITY.md):
-
 - `prefers-reduced-motion` respected — damping and auto-scroll disabled.
 - The 3D canvas is `aria-hidden`; all narrative content lives in accessible DOM HUD text.
 - Touch targets ≥ 44 px; keyboard-reachable controls; focus styles preserved.
@@ -226,8 +222,7 @@ Per [`ACCESSIBILITY.md`](spec%20driven%20development/ACCESSIBILITY.md):
 │       ├── data/              epochs.ts (grades/boundaries), facts.ts (cosmology cards)
 │       ├── state/store.ts     Zustand store (UI state only)
 │       └── styles/            global.css (tokens), observatory.css
-├── spec driven development/   Full spec package — start at SPEC.md + BUILD_PLAN.md
-└── .codex/                    Optimization brief used for the hardening pass
+└── .github/workflows/         GitHub Pages deploy workflow
 ```
 
 ## Tech Stack
