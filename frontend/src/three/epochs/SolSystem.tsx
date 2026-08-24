@@ -15,13 +15,19 @@ import { journey } from '../../hooks/useDampedProgress'
 const SUN_U = 0.895 // anchored inside the finale window — the system assembles AHEAD of
 // the camera during 0.84–0.95, then the crane reveal looks down on it at >0.97
 const loader = new TextureLoader()
+const ringTexture = loader.load('/assets/textures/2k_saturn_ring_alpha.png')
+ringTexture.colorSpace = SRGBColorSpace
+ringTexture.anisotropy = 8
 
 /** Real NASA / Solar System Scope maps (CC-BY/PD) — see ASSETS.md §1. */
 function useTex(file: string) {
   return useMemo(() => {
     const t = loader.load(`/assets/textures/${file}`)
     t.colorSpace = SRGBColorSpace
-    t.anisotropy = 4
+    // Planet maps are viewed at grazing angles during the crane reveal; keep the
+    // texture crisp without increasing geometry or post-processing cost.
+    t.anisotropy = 8
+    t.generateMipmaps = true
     return t
   }, [file])
 }
@@ -82,7 +88,15 @@ function Planet({ spec }: { spec: PlanetSpec }) {
         {spec.ring && (
           <mesh rotation={[Math.PI / 2.25, 0.2, 0]}>
             <ringGeometry args={[spec.radius * 1.45, spec.radius * 2.3, 64]} />
-            <meshBasicMaterial color="#d8b877" transparent opacity={0.75} side={DoubleSide} depthWrite={false} />
+            <meshBasicMaterial
+              map={ringTexture}
+              color="#e3cfaa"
+              transparent
+              opacity={0.82}
+              side={DoubleSide}
+              depthWrite={false}
+              toneMapped={false}
+            />
           </mesh>
         )}
         {spec.moon && (
@@ -116,7 +130,10 @@ export function SolSystem() {
     g.addColorStop(1, 'rgba(255,150,50,0)')
     ctx.fillStyle = g
     ctx.fillRect(0, 0, 256, 256)
-    return new CanvasTexture(c)
+    const texture = new CanvasTexture(c)
+    texture.colorSpace = SRGBColorSpace
+    texture.generateMipmaps = false
+    return texture
   }, [])
 
   useFrame((_, delta) => {
@@ -132,7 +149,7 @@ export function SolSystem() {
         <meshBasicMaterial map={sunMap ?? null} color={sunMap ? '#ffffff' : '#ffd75e'} toneMapped={false} />
       </mesh>
       <sprite scale={[32, 32, 1]}>
-        <spriteMaterial map={glowMap} blending={AdditiveBlending} depthWrite={false} opacity={0.7} />
+        <spriteMaterial map={glowMap} blending={AdditiveBlending} depthWrite={false} opacity={0.7} toneMapped={false} />
       </sprite>
 
       {/* the system plane */}
