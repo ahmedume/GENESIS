@@ -25,6 +25,12 @@ export function useScrollProgress() {
 
     let raf = 0
     const loop = (now: number) => {
+      const state = useStore.getState()
+      if (state.autoScroll && state.booted) {
+        const next = Math.min(l.limit, l.scroll + 1.15)
+        l.scrollTo(next, { immediate: true, force: true })
+        if (next >= l.limit - 1) state.setAutoScroll(false)
+      }
       l.raf(now)
       journey.raw = Math.min(1, Math.max(0, l.progress))
       raf = requestAnimationFrame(loop)
@@ -38,8 +44,18 @@ export function useScrollProgress() {
       }
     })
 
+    const stopAutoScroll = () => {
+      if (useStore.getState().autoScroll) useStore.getState().setAutoScroll(false)
+    }
+    window.addEventListener('wheel', stopAutoScroll, { passive: true })
+    window.addEventListener('touchstart', stopAutoScroll, { passive: true })
+    window.addEventListener('keydown', stopAutoScroll)
+
     return () => {
       unlock()
+      window.removeEventListener('wheel', stopAutoScroll)
+      window.removeEventListener('touchstart', stopAutoScroll)
+      window.removeEventListener('keydown', stopAutoScroll)
       cancelAnimationFrame(raf)
       l.destroy()
       journey.raw = 0

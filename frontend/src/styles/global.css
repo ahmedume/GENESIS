@@ -44,6 +44,52 @@ body::-webkit-scrollbar {
   color: var(--text-secondary);
 }
 
+.scene-object-label {
+  display: block;
+  width: min(280px, 62vw);
+  padding: 14px 16px;
+  border: 1px solid rgb(111 168 201 / 28%);
+  border-left: 2px solid rgb(0 240 255 / 72%);
+  border-radius: 10px;
+  background: rgb(10 14 24 / 70%);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 12px 40px rgb(0 0 5 / 26%);
+  color: var(--text-primary);
+  text-align: left;
+  text-shadow: none;
+}
+.scene-object-label__line {
+  display: none;
+}
+.scene-object-label__title {
+  font-family: var(--font-display);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+}
+.scene-object-label__description {
+  margin-top: 3px;
+  color: rgb(244 238 255 / 70%);
+  font-family: var(--font-body);
+  font-size: 12px;
+  line-height: 1.35;
+}
+.scene-object-label__hint {
+  margin-top: 5px;
+  color: rgb(0 240 255 / 78%);
+  font-family: var(--font-terminal);
+  font-size: 12px;
+  letter-spacing: 0.08em;
+}
+.scene-object-label--selected {
+  border-left-color: var(--white-hot);
+  background: linear-gradient(90deg, rgb(10 14 24 / 92%), rgb(10 14 24 / 34%));
+  box-shadow: 0 0 24px rgb(0 240 255 / 12%);
+}
+body.is-inspecting-object {
+  cursor: grabbing;
+  user-select: none;
+}
+
 /* chromatic-aberration title treatment (DESIGN-SYSTEM §5 envelope moments) */
 .ca-text {
   text-shadow:

@@ -1,16 +1,20 @@
-import { useMemo, useRef } from 'react'
+import { useLayoutEffect, useMemo, useRef, useState } from 'react'
 import { useFrame } from '@react-three/fiber'
+import { Html } from '@react-three/drei'
 import {
   AdditiveBlending,
   BackSide,
   CanvasTexture,
   DoubleSide,
   Group,
+  InstancedMesh,
+  Object3D,
   SRGBColorSpace,
   TextureLoader,
 } from 'three'
 import { pointAt } from '../../lib/cameraPath'
 import { journey } from '../../hooks/useDampedProgress'
+import { useStore } from '../../state/store'
 
 const SUN_U = 0.895 // anchored inside the finale window — the system assembles AHEAD of
 // the camera during 0.84–0.95, then the crane reveal looks down on it at >0.97
@@ -19,9 +23,38 @@ const ringTexture = loader.load('/assets/textures/2k_saturn_ring_alpha.png')
 ringTexture.colorSpace = SRGBColorSpace
 ringTexture.anisotropy = 8
 
+function seeded(seed: number) {
+  let value = seed
+  return () => (value = (value * 1664525 + 1013904223) % 4294967296) / 4294967296
+}
+
+function proceduralPlanetTexture(base: string, accent: string) {
+  const canvas = document.createElement('canvas')
+  canvas.width = 512
+  canvas.height = 256
+  const ctx = canvas.getContext('2d')!
+  const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height)
+  gradient.addColorStop(0, accent)
+  gradient.addColorStop(0.48, base)
+  gradient.addColorStop(1, '#10131c')
+  ctx.fillStyle = gradient
+  ctx.fillRect(0, 0, canvas.width, canvas.height)
+  // Low-frequency latitude bands give the procedural worlds visual depth at a
+  // fraction of the cost of another downloaded 2K map.
+  for (let y = 14; y < canvas.height; y += 22) {
+    ctx.fillStyle = `rgba(255,255,255,${0.035 + ((y / 22) % 3) * 0.012})`
+    ctx.fillRect(0, y, canvas.width, 6)
+  }
+  const texture = new CanvasTexture(canvas)
+  texture.colorSpace = SRGBColorSpace
+  texture.anisotropy = 8
+  return texture
+}
+
 /** Real NASA / Solar System Scope maps (CC-BY/PD) — see ASSETS.md §1. */
-function useTex(file: string) {
+function useTex(file?: string) {
   return useMemo(() => {
+    if (!file) return null
     const t = loader.load(`/assets/textures/${file}`)
     t.colorSpace = SRGBColorSpace
     // Planet maps are viewed at grazing angles during the crane reveal; keep the
@@ -35,54 +68,111 @@ function useTex(file: string) {
 const clamp01 = (v: number) => Math.min(1, Math.max(0, v))
 
 interface PlanetSpec {
-  file: string
+  file?: string
   fallback: string
   radius: number
   orbitR: number
   angle0: number
   snapAt: number
+  roughness?: number
+  bandColor?: string
   ring?: boolean
   atmosphere?: boolean
+  atmosphereColor?: string
   moon?: boolean
+  title: string
+  description: string
 }
 
 // snap beats staggered per STORYBOARD E8 ("planets snap into orbit one-by-one, 150ms apart" ≈ scroll steps)
 const PLANETS: PlanetSpec[] = [
-  { file: '2k_mars.jpg', fallback: '#c1440e', radius: 1.3, orbitR: 30, angle0: 1.1, snapAt: 0.858 },
-  { file: '2k_earth_daymap.jpg', fallback: '#38bdf8', radius: 1.7, orbitR: 39, angle0: 3.6, snapAt: 0.87, atmosphere: true, moon: true },
-  { file: '2k_jupiter.jpg', fallback: '#c9a06a', radius: 4.4, orbitR: 52, angle0: 5.2, snapAt: 0.882 },
-  { file: '2k_saturn.jpg', fallback: '#d8b877', radius: 3.6, orbitR: 66, angle0: 0.6, snapAt: 0.894, ring: true },
+  { fallback: '#8a8275', bandColor: '#c6b9a7', radius: 0.55, orbitR: 15, angle0: 4.6, snapAt: 0.846, roughness: 0.92, title: 'MERCURY', description: 'A scorched iron world, racing closest to the Sun.' },
+  { fallback: '#d9a36e', bandColor: '#f3d39a', radius: 1.0, orbitR: 22, angle0: 2.3, snapAt: 0.852, roughness: 0.88, title: 'VENUS', description: 'A cloud-wrapped furnace with a runaway atmosphere.' },
+  { file: '2k_mars.jpg', fallback: '#c1440e', radius: 1.3, orbitR: 30, angle0: 1.1, snapAt: 0.858, title: 'MARS', description: 'A rust-red archive of ancient rivers and vanished seas.' },
+  { file: '2k_earth_daymap.jpg', fallback: '#38bdf8', radius: 1.7, orbitR: 39, angle0: 3.6, snapAt: 0.87, atmosphere: true, atmosphereColor: '#58b9ff', moon: true, title: 'EARTH', description: 'A blue world of oceans, weather, and one known living biosphere.' },
+  { file: '2k_jupiter.jpg', fallback: '#c9a06a', radius: 4.4, orbitR: 52, angle0: 5.2, snapAt: 0.882, title: 'JUPITER', description: 'A storm giant whose gravity shepherds the whole system.' },
+  { file: '2k_saturn.jpg', fallback: '#d8b877', radius: 3.6, orbitR: 66, angle0: 0.6, snapAt: 0.894, ring: true, title: 'SATURN', description: 'Ice, dust, and shadow arranged into the Solar System’s signature rings.' },
+  { fallback: '#77b9c6', bandColor: '#c9f6ff', radius: 2.2, orbitR: 81, angle0: 4.0, snapAt: 0.906, atmosphere: true, atmosphereColor: '#8ee9ff', title: 'URANUS', description: 'A tilted blue world, rolling through the outer dark on its side.' },
+  { fallback: '#4568c7', bandColor: '#728fea', radius: 2.1, orbitR: 95, angle0: 1.8, snapAt: 0.918, atmosphere: true, atmosphereColor: '#6e89ff', title: 'NEPTUNE', description: 'The far blue sentinel, where winds outrun any storm on Earth.' },
 ]
 
 function Planet({ spec }: { spec: PlanetSpec }) {
   const pivot = useRef<Group>(null)
   const moonPivot = useRef<Group>(null)
+  const labelShown = useRef(false)
+  const inspecting = useRef(false)
+  const dragging = useRef(false)
+  const lastPointer = useRef({ x: 0, y: 0 })
+  const [showLabel, setShowLabel] = useState(false)
+  const [selected, setSelected] = useState(false)
   const map = useTex(spec.file)
-  const moonMap = useTex('2k_moon.jpg') // unconditional — Rules of Hooks
+  const fallbackMap = useMemo(
+    () => spec.file ? null : proceduralPlanetTexture(spec.fallback, spec.bandColor ?? spec.fallback),
+    [spec.bandColor, spec.fallback, spec.file],
+  )
+  const surfaceMap = map ?? fallbackMap
+  const moonMap = useTex(spec.moon ? '2k_moon.jpg' : undefined)
 
   useFrame(({ clock }, delta) => {
     if (moonPivot.current) moonPivot.current.rotation.y += delta * 0.9
     if (pivot.current) {
-      pivot.current.rotation.y = clock.elapsedTime * 0.15
+      if (!inspecting.current) pivot.current.rotation.y = clock.elapsedTime * 0.15
       // scroll-scrubbed snap-in with gravitational settle overshoot
       const k = clamp01((journey.damped - spec.snapAt) / 0.012)
       const settle = k === 0 ? 0 : k < 1 ? 1 + Math.sin(k * Math.PI) * 0.35 : 1
       pivot.current.scale.setScalar(settle)
       pivot.current.visible = k > 0
+      const nextLabelShown = k > 0
+      if (nextLabelShown !== labelShown.current) {
+        labelShown.current = nextLabelShown
+        setShowLabel(nextLabelShown)
+      }
     }
   })
 
   return (
     <group position={[Math.cos(spec.angle0) * spec.orbitR, 0, Math.sin(spec.angle0) * spec.orbitR]}>
-      <group ref={pivot}>
+      <group
+        ref={pivot}
+        onPointerDown={(event) => {
+          event.stopPropagation()
+          inspecting.current = true
+          dragging.current = true
+          lastPointer.current = { x: event.clientX, y: event.clientY }
+          setSelected(true)
+          document.body.classList.add('is-inspecting-object')
+        }}
+        onPointerMove={(event) => {
+          if (!dragging.current || !pivot.current) return
+          event.stopPropagation()
+          const dx = event.clientX - lastPointer.current.x
+          const dy = event.clientY - lastPointer.current.y
+          lastPointer.current = { x: event.clientX, y: event.clientY }
+          pivot.current.rotation.y += dx * 0.012
+          pivot.current.rotation.x = Math.max(-0.8, Math.min(0.8, pivot.current.rotation.x + dy * 0.008))
+        }}
+        onPointerUp={(event) => {
+          event.stopPropagation()
+          dragging.current = false
+          document.body.classList.remove('is-inspecting-object')
+        }}
+        onPointerLeave={() => {
+          dragging.current = false
+          document.body.classList.remove('is-inspecting-object')
+        }}
+        onPointerCancel={() => {
+          dragging.current = false
+          document.body.classList.remove('is-inspecting-object')
+        }}
+      >
         <mesh>
           <sphereGeometry args={[spec.radius, 48, 48]} />
-          <meshStandardMaterial map={map ?? null} color={map ? '#ffffff' : spec.fallback} roughness={0.85} metalness={0} />
+          <meshStandardMaterial map={surfaceMap} color={surfaceMap ? '#ffffff' : spec.fallback} roughness={spec.roughness ?? 0.85} metalness={0} />
         </mesh>
         {spec.atmosphere && (
           <mesh>
             <sphereGeometry args={[spec.radius * 1.05, 32, 32]} />
-            <meshBasicMaterial color="#38bdf8" transparent opacity={0.22} side={BackSide} blending={AdditiveBlending} depthWrite={false} />
+            <meshBasicMaterial color={spec.atmosphereColor ?? '#58b9ff'} transparent opacity={0.2} side={BackSide} blending={AdditiveBlending} depthWrite={false} toneMapped={false} />
           </mesh>
         )}
         {spec.ring && (
@@ -103,11 +193,74 @@ function Planet({ spec }: { spec: PlanetSpec }) {
           <group ref={moonPivot}>
             <mesh position={[spec.radius * 2.6, 0.4, 0]}>
               <sphereGeometry args={[0.45, 24, 24]} />
-              <meshStandardMaterial map={moonMap} roughness={0.95} />
+              <meshStandardMaterial map={moonMap} roughness={0.95} color={moonMap ? '#ffffff' : '#8f8f8f'} />
             </mesh>
           </group>
         )}
+        {showLabel && (
+          <Html
+            position={[spec.radius + 1.6, spec.radius * 0.55, 0]}
+            distanceFactor={10}
+            zIndexRange={[5, 20]}
+            style={{ pointerEvents: 'none' }}
+          >
+            <div className={`scene-object-label${selected ? ' scene-object-label--selected' : ''}`}>
+              <span className="scene-object-label__line" aria-hidden="true" />
+              <div>
+                <p className="scene-object-label__title">{spec.title}</p>
+                <p className="scene-object-label__description">{spec.description}</p>
+                <p className="scene-object-label__hint">{selected ? 'DRAG TO ROTATE · TAP TO HOLD' : 'TAP TO INSPECT · DRAG TO ROTATE'}</p>
+              </div>
+            </div>
+          </Html>
+        )}
       </group>
+    </group>
+  )
+}
+
+const BELT_COUNTS = { low: 64, medium: 112, high: 180 } as const
+
+/** A single instanced belt adds scale and depth to the system for one draw call. */
+function AsteroidBelt() {
+  const tier = useStore((state) => state.qualityTier)
+  const count = BELT_COUNTS[tier]
+  const belt = useRef<Group>(null)
+  const mesh = useRef<InstancedMesh>(null)
+  const dummy = useMemo(() => new Object3D(), [])
+  const rocks = useMemo(() => {
+    const random = seeded(719)
+    return Array.from({ length: count }, () => ({
+      radius: 42 + random() * 7,
+      angle: random() * Math.PI * 2,
+      height: (random() - 0.5) * 1.8,
+      scale: 0.12 + random() * 0.34,
+    }))
+  }, [count])
+
+  useLayoutEffect(() => {
+    if (!mesh.current) return
+    rocks.forEach((rock, index) => {
+      dummy.position.set(Math.cos(rock.angle) * rock.radius, rock.height, Math.sin(rock.angle) * rock.radius)
+      dummy.rotation.set(rock.angle * 0.7, rock.angle * 1.3, rock.angle * 0.4)
+      dummy.scale.setScalar(rock.scale)
+      dummy.updateMatrix()
+      mesh.current!.setMatrixAt(index, dummy.matrix)
+    })
+    mesh.current.instanceMatrix.needsUpdate = true
+  }, [dummy, rocks])
+
+  useFrame((_, delta) => {
+    if (!belt.current || journey.damped < 0.84) return
+    belt.current.rotation.y += delta * 0.012
+  })
+
+  return (
+    <group ref={belt} rotation={[0.32, 0, -0.08]}>
+      <instancedMesh ref={mesh} args={[undefined, undefined, count]}>
+        <icosahedronGeometry args={[1, 0]} />
+        <meshStandardMaterial color="#766758" roughness={0.96} metalness={0.02} />
+      </instancedMesh>
     </group>
   )
 }
@@ -154,8 +307,9 @@ export function SolSystem() {
 
       {/* the system plane */}
       <group ref={system} rotation={[0.32, 0, -0.08]}>
+        <AsteroidBelt />
         {PLANETS.map((p) => (
-          <Planet key={p.file} spec={p} />
+          <Planet key={`${p.orbitR}-${p.angle0}`} spec={p} />
         ))}
       </group>
     </group>

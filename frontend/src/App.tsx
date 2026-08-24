@@ -72,6 +72,7 @@ export default function App() {
       <div className="fixed inset-0">
         <CanvasErrorBoundary>
           <Canvas
+            aria-hidden="true"
             dpr={TIER_DPR[tier]}
             camera={{ fov: 60, near: 0.1, far: 800 }}
             // antialias:false — the EffectComposer renders into its own targets and blits to the

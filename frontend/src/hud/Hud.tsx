@@ -14,6 +14,7 @@ const FADE_AT = 0.02 // matches IGNITE_AT — title yields as the universe begin
 function HeroOverlay() {
   const booted = useStore((s) => s.booted)
   const ignited = useStore((s) => s.ignited)
+  const reduced = useReducedMotion()
   const [faded, setFaded] = useState(false)
 
   useEffect(() => {
@@ -40,16 +41,16 @@ function HeroOverlay() {
         faded || ignited ? 'pointer-events-none opacity-0' : 'opacity-100'
       }`}
     >
-      <h1 className="ca-text font-display text-center text-[clamp(44px,9vw,128px)] leading-none tracking-[0.06em]">
+      <h1 className="ca-text max-w-[calc(100vw-2rem)] px-2 font-display text-center text-[clamp(34px,9vw,128px)] leading-[0.95] tracking-[0.06em] text-balance">
         GENESIS.EXE
       </h1>
       <p className="text-secondary mt-5 text-[clamp(15px,1.6vw,20px)] tracking-wide">13.8 billion years. One scroll.</p>
-      <div className="absolute bottom-[6vh] flex flex-col items-center gap-2">
+      {!reduced && <div className="absolute bottom-[6vh] flex flex-col items-center gap-2">
         <svg width="18" height="12" viewBox="0 0 18 12" className="animate-cue" aria-hidden>
           <path d="M2 2l7 7 7-7" fill="none" stroke="var(--signal-cyan)" strokeWidth="2" />
         </svg>
         <span className="font-terminal text-lg">SCROLL TO BEGIN TIME</span>
-      </div>
+      </div>}
     </div>
   )
 }
@@ -60,7 +61,7 @@ function ReducedMotionNav() {
   if (!reduced || !booted) return null
 
   return (
-    <nav className="fixed bottom-5 left-1/2 z-40 flex max-w-[calc(100vw-2rem)] -translate-x-1/2 gap-1 overflow-x-auto border border-white/15 bg-black/80 p-1" aria-label="Jump to epoch">
+    <nav className="fixed bottom-5 left-1/2 z-40 flex max-w-[calc(100vw-2rem)] -translate-x-1/2 gap-1 overflow-x-auto overflow-y-hidden border border-white/15 bg-black/80 p-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden" aria-label="Jump to epoch">
       {EPOCHS.map((epoch) => (
         <button
           key={epoch.id}
@@ -77,6 +78,24 @@ function ReducedMotionNav() {
   )
 }
 
+function AutoScrollButton() {
+  const booted = useStore((s) => s.booted)
+  const autoScroll = useStore((s) => s.autoScroll)
+  const setAutoScroll = useStore((s) => s.setAutoScroll)
+  const reduced = useReducedMotion()
+  if (!booted || reduced) return null
+
+  return (
+    <button
+      className="btn-ghost fixed bottom-5 right-5 z-40 min-h-11 px-4 text-xs sm:right-8"
+      aria-pressed={autoScroll}
+      onClick={() => setAutoScroll(!autoScroll)}
+    >
+      {autoScroll ? 'Pause Journey' : 'Auto Scroll'}
+    </button>
+  )
+}
+
 /** Fixed DOM layer above the canvas: boot gate + hero lockup + finale plaque. */
 export function Hud() {
   return (
@@ -86,6 +105,7 @@ export function Hud() {
       <EpochLabel />
       <CosmicClock />
       <ReducedMotionNav />
+      <AutoScrollButton />
       <FinalePlaque />
     </>
   )
