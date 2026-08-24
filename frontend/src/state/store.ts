@@ -12,6 +12,7 @@ interface AppState {
   setBooted: (booted: boolean) => void
   setIgnited: (ignited: boolean) => void
   toggleAudio: () => void
+  setAudioEnabled: (enabled: boolean) => void
   setQualityTier: (tier: QualityTier) => void
   setAutoScroll: (enabled: boolean) => void
 }
@@ -27,6 +28,7 @@ export const useStore = create<AppState>((set) => ({
   setBooted: (booted) => set({ booted }),
   setIgnited: (ignited) => set({ ignited }),
   toggleAudio: () => set((s) => ({ audioEnabled: !s.audioEnabled })),
+  setAudioEnabled: (audioEnabled) => set({ audioEnabled }),
   setQualityTier: (qualityTier) => set({ qualityTier }),
   setAutoScroll: (autoScroll) => set({ autoScroll }),
 }))

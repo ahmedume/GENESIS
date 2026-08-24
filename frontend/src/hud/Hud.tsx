@@ -5,6 +5,7 @@ import { BootScreen } from './BootScreen'
 import { FinalePlaque } from './FinalePlaque'
 import { EpochLabel } from './EpochLabel'
 import { CosmicClock } from './CosmicClock'
+import { AudioToggle } from './AudioToggle'
 import { EPOCHS } from '../data/epochs'
 import { lenis } from '../hooks/useScrollProgress'
 import { useReducedMotion } from '../hooks/useReducedMotion'
@@ -124,6 +125,7 @@ export function Hud() {
       <CosmicClock />
       <ReducedMotionNav />
       <AutoScrollButton />
+      <AudioToggle />
       <FinalePlaque />
     </>
   )

@@ -24,10 +24,12 @@ export function useScrollProgress() {
     l.stop()
 
     let raf = 0
+    // px per frame — 1.15 ≈ 3.4 min journey @1080p/60Hz; +0.01 shaves ~2s off the cruise
+    const AUTO_SCROLL_SPEED = 1.16
     const loop = (now: number) => {
       const state = useStore.getState()
       if (state.autoScroll && state.booted) {
-        const next = Math.min(l.limit, l.scroll + 1.15)
+        const next = Math.min(l.limit, l.scroll + AUTO_SCROLL_SPEED)
         l.scrollTo(next, { immediate: true, force: true })
         if (next >= l.limit - 1) state.setAutoScroll(false)
       }
